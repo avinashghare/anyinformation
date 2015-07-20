@@ -1,0 +1,249 @@
+<section>
+    <div class="container">
+        <toaster-container></toaster-container>
+        <div class="row">
+
+            <!-- <h3>Girls Pink T Shirt arrived in store</h3>
+							<div class="post-meta">
+							    <ul>
+							        <li><i class="fa fa-user"></i> Mac Doe</li>
+							        <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
+							        <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+							    </ul>
+							</div> -->
+            <div class="media commnets">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a class="pull-left" href="#">
+                            <img class="media-object mediumimage img-responsive" ng-src="{{detail.listing.logo|imagepath}}" alt="">
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="media-body">
+                            <h4 class="media-heading"><i class="fa fa-bookmark fapadr"></i><span>{{detail.listing.name}}</span></h4>
+                            <h6><i class="fa fa-location-arrow fapadr"></i><span class="med1">{{detail.listing.address | cut:true:50:' ...'}}</span></h6>
+                            <h6><i class="fa fa-mobile fapadr"></i><span class="med2">{{detail.listing.contactno}}</span></h6>
+                            <h6>
+                                <i class="fa fa-envelope fapadr"></i><a href="#enq"><span class="med3">Send Enquiry By Email</span></a>
+                            </h6>
+                        </div>
+                         <h4 style="margin:0;">Rating</h4>
+                        <div class="star-rating pull-left" star-rating rating-value="rating" data-max="5" on-rating-selected="rateFunction(rating, detail.listing.listingid)">
+                        </div><p style="margin:5px;">({{detail.totalratings}}votes)</p>
+                        <div class="alert" style="margin:10px 0 0 0;" ng-class="alertmsg" role="alert" ng-if="ratingmsg!=''">
+                            {{ratingmsg}}
+                        </div>
+                        <div class="btn-mail" style="margin-top:10px;">
+                            <p class="pull-left">
+                                <a class="btn btn-primary mrr" href="">Send SMS</a>
+                                <a class="btn btn-primary mrr" ng-click="sendemail(detail.listing.listingid)">Send Email</a>
+                                <a class="btn btn-primary mrr" href="">Other Posts</a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                    <!-- <div class="blog-socials">
+							    <ul>
+							        <li><a href=""><i class="fa fa-facebook"></i></a></li>
+							        <li><a href=""><i class="fa fa-twitter"></i></a></li>
+							        <li><a href=""><i class="fa fa-dribbble"></i></a></li>
+							        <li><a href=""><i class="fa fa-google-plus"></i></a></li>
+							    </ul>
+							</div> -->
+
+                    <div class="col-md-5">
+
+
+                        <div ng-if="detail.listing.lat!='' && detail.listing.long!='' && detail.listing.lat && detail.listing.long">
+                            <google-map center="centerProperty" class="posii" zoom="zoomProperty" markers="markersProperty" latitude="clickedLatitudeProperty" longitude="clickedLongitudeProperty" mark-click="false" draggable="true" style="height: 223px; width: 100%;transform:inherit;">
+                            </google-map>
+                        </div>
+
+                        <!--
+							<ul class="nav navbar-nav">
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+							</ul>
+-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container" ng-if="detail.images!=''">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="image-row">
+                    <div class="det-img">
+                        <img ng-src="{{img.image|imagepath}}" class="lightbox" ng-click="imagelightbox(img.image)" height="80px" width="150px" ng-repeat="img in detail.images">
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="details-content">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="more-text">
+                        <div class="fortitle text-center">
+                            <h2 class="title">More Information</h2>
+                        </div>
+
+                        <div  class="fapadl" ng-if="detail.listing.description"><i class="fa fa-info-circle fapadr mk-id"></i>
+                        <p class="detail-add">{{detail.listing.description}}</p></div>
+                        <div class="fapadl" ng-if="detail.listing.address"><i class="fa fa-location-arrow fapadr mk-id"></i>
+                            <p class="detail-add">{{detail.listing.address}}</p>
+                        </div>
+                        <p class="fapadl" ng-if="detail.listing.contactno"><i class="fa fa-mobile fapadr"></i>&nbsp;{{detail.listing.contactno}}</p>
+                        <ul class="can-detials" visiblediv>
+                            <li><span>Area : </span>{{detail.listing.area}}</li>
+                            <li> <span>Pincode :</span> {{detail.listing.pincode}}<br>
+                            <li><span>City : </span>{{detail.listing.city}}</li>
+                            <li><span>State : </span>{{detail.listing.state}}</li>
+                            <li><span>Country : </span> {{detail.listing.country}}</li>
+                            <li><span>Contact no : </span> {{detail.listing.contactno}}</li>
+                            <li class="email-details"><span>Email : </span>{{detail.listing.email}}</li>
+                            <li class="email-details"><span>Website : </span>{{detail.listing.website}}</li>
+                            </ul>
+                        
+                    </div>
+                    <div class="more-text">
+                        <div class="fortitle text-center">
+                            <h2 class="title">Other categories</h2>
+                        </div>
+                        <p class="fapadl" ng-repeat="category in detail.categories"><i class="fa fa-angle-double-right fapadr"></i>&nbsp;{{category.categoryname}}</p>
+                    </div>
+                    <div class="more-text" ng-if="detail.daysofoperation!='' || detail.listing.timeofoperation_start!=''">
+
+                        <div class="fortitle text-center">
+                            <h2 class="title">Hours Of Operation</h2>
+                        </div>
+                        <div class="fapd">
+                            <i class="fa fa-calendar" ng-if="detail.daysofoperation"></i> <strong class="fapadl mhs" ng-repeat="operation in detail.daysofoperation">{{operation.daysofoperationname}}&nbsp;&nbsp;</strong>
+                            <br>
+                            <br>
+
+
+                            <i class="fa fa-clock-o" ng-show="detail.listing.timeofoperation_start!=''"></i><span class="fapadl" ng-show="detail.listing.timeofoperation_start!=''">{{detail.listing.timeofoperation_start}} To {{detail.listing.timeofoperation_end}}</span>
+                        </div>
+                    </div>
+                    <div class="more-text">
+                        <div class="fortitle text-center">
+                            <h2 class="title">Modes Of Payment</h2>
+                        </div>
+                        <div class="fapd fap">
+                            <i class="fa fa-money"></i><span class="fapadl mhs" ng-repeat="payment in detail.modeofpayment">{{payment.modeofpaymentname}}</span>
+                        </div>
+                    </div>
+                    <A NAME="enq"></A>
+                    <div class="more-text">
+                        <div class="fortitle text-center">
+                            <h2 class="title text-center">Enquiry</h2>
+                        </div>
+                        <div class="signup-form">
+                            <div class="signupmsg">
+                                {{enquirymsg}}
+                            </div>
+                            <input type="text" ng-model="enquiry.name" class="form-control" ng-pattern="/^(\D)+$/" ng-class="allvalidation[0].validation" placeholder="Name *" required/>
+                            <input type="email" ng-model="enquiry.email" class="form-control" ng-class="allvalidation[1].validation" placeholder="Email *" required/>
+                            <input type="tel" ng-model="enquiry.phone" class="form-control" ng-pattern="/^[0-9]+$/" ng-class="allvalidation[2].validation" ng-minlength="10" ng-maxlength="15" placeholder="Phone *" required/>
+                            <textarea ng-model="enquiry.comment" class="form-control" ng-class="allvalidation[3].validation" placeholder="Comment *" required></textarea>
+                            <button class="btn" ng-click="enquiryuser(enquiry)">Send</button>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                   
+                    <div class="recent-box">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Recently Visited</div>
+                            <table class="table">
+                                <tr ng-repeat="recent in recentvisit">
+                                    <td>
+                                        <a href="#/detail/{{recent.id}}">
+                                            <img ng-src="{{recent.logo|imagepath}}">
+                                        </a>
+                                    </td>
+                                    <td><a href="#/detail/{{recent.id}}" class="linknot">{{recent.name}}</a>
+                                    </td>
+                                    <!--                                    </a>-->
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="facebook-deatils">
+                        <div class="fb-like-box" data-href="https://www.facebook.com/{{detail.listing.facebook}}" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="true" data-show-border="true"></div>
+<!--                        <div class="fb-like-box" data-href="https://www.facebook.com/wepick181" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="true" data-show-border="true"></div>-->
+                    </div>
+                    <script>
+                        (function (d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id)) return;
+                            js = d.createElement(s);
+                            js.id = id;
+                            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=623204201082335&version=v2.0";
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));
+                    </script>
+
+                    <div class="video-you">
+                        <div my-youtube code="detail.listing.video"></div>
+                    </div>
+                    <!--
+                    <video width="320" height="240" controls>
+                      <source src="http://localhost/foranyinformation/uploads/event30414.3gp">
+                    </video>
+-->
+
+                </div>
+            </div>
+            <!--
+        <div class="row">
+            <h2 class="title text-center">More Information</h2>
+
+
+          
+
+            <div class="fb-like-box" data-href="https://www.facebook.com/{{detail.listing.facebook}}" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="true" data-show-border="true"></div>
+
+          
+
+            <p class="fapadl"><i class="fa fa-info-circle fapadr"></i>{{detail.listing.description}}</p>
+            <p class="fapadl"><i class="fa fa-map-marker fapadr"></i>&nbsp;{{detail.listing.address}}</p>
+            <p class="fapadl"><i class="fa fa-phone fapadr"></i>&nbsp;{{detail.listing.contactno}}</p>
+
+            <h2 class="title text-center">Other categories</h2>
+            <p class="fapadl" ng-repeat="category in detail.categories"><i class="fa fa-angle-double-right fapadr"></i>&nbsp;{{category.categoryname}}</p>
+            <h2 class="title text-center">Hours Of Operation</h2>
+            <strong class="fapadl" ng-repeat="operation in detail.daysofoperation">{{operation.daysofoperationname}}&nbsp;&nbsp;</strong>
+            <h6 class="fapadl">9:00 am To 9:00 pm</h6>
+            <h2 class="title text-center">Modes Of Payment</h2>
+            <p class="fapadl" ng-repeat="payment in detail.modeofpayment">{{payment.modeofpaymentname}}</p>
+            <h2 class="title text-center">Enquiry</h2>
+            <div class="signup-form">
+                <div class="signupmsg" ng-show="enquiryshow">
+
+                    {{enquirymsg}}
+                </div>
+                <input type="text" ng-model="enquiry.name" class="form-control" ng-class="allvalidation[0].validation" placeholder="Name *" required/>
+                <input type="email" ng-model="enquiry.email" class="form-control" ng-class="allvalidation[1].validation" placeholder="Email *" required/>
+                <input type="number" ng-model="enquiry.phone" class="form-control" ng-class="allvalidation[2].validation" placeholder="Phone *" required/>
+                <textarea ng-model="enquiry.comment" class="form-control" ng-class="allvalidation[3].validation" placeholder="Comment *" required></textarea>
+                <button class="btn btn-default" ng-click="enquiryuser(enquiry)">Send</button>
+            </div>
+        </div>
+-->
+        </div>
+</section>

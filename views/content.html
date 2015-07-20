@@ -1,0 +1,49 @@
+<section>
+    <div class="container">
+       
+       
+        <div class="row" ng-repeat="categories in homecategory">
+            <div class="col-sm-2" ng-repeat="category in categories">
+                <div class="product-image-wrapper homecat">
+                    <div class="single-products">
+                        <div class="productinfo text-center">
+                            <a ng-click="oncategoryclick(category.id)" ng-if="category.status==0" class="homecat">
+                                <div><i class="{{category.logo}}"></i>
+                                </div>
+                                <p>{{category.name}}</p>
+                            </a>
+                            <a ng-click="oncategoryclick(category.id)" ng-if="category.status==1" class="homecat">
+                                <div>
+                                    <img ng-src="{{'png/'+category.logo|imagepath1}}" class="fa-3x"/>
+                                </div>
+                                <p>{{category.name}}</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+<!--
+        
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="product-image-wrapper homecat">
+                    <div class="single-products">
+                        <div class="productinfo text-center">
+                            <a href="#" class="homecat">
+                                <div>
+                                    <img src="http://localhost/anyinform/lib/images/" style="width:50px;"/>
+                                </div>
+                                <p>title</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+-->
+        
+    </div>
+</section>

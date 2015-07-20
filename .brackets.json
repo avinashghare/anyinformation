@@ -1,0 +1,8 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Applications/XAMPP/xamppfiles/htdocs/forany2/bower_components/angularjs-geolocation/src/geolocation.js",
+        "/Applications/XAMPP/xamppfiles/htdocs/forany2/js/app.js",
+        "C:/xampp/htdocs/forany2/bower_components/angularjs-geolocation/karma.conf.js",
+        "C:/xampp/htdocs/forany2/bower_components/angularjs-geolocation/src/geolocation.js"
+    ]
+}

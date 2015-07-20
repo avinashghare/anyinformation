@@ -1,0 +1,129 @@
+<section>
+    <div class="container">
+        <toaster-container></toaster-container>
+        <div class="banner">
+            <img ng-src="{{banner.banner | imagepath3}}" ng-show="banner.banner==''" width="100%">
+            <!--            <img ng-src="{{'png/'+banner.banner | imagepath1}}" ng-show="banner.banner!=''" width="100%">  'ad/ad.jpg'-->
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="cat-aside">
+                    <div class="left-sidebar">
+                        <div class="panel-group category-products" style="padding-left: 17px;" id="accordian">
+                            <!--category-productsr-->
+                            <h4>{{filters[0].name}}</h4>
+                            <div class="panel panel-default" ng-repeat="filter in filters">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><a ng-click="filterselect(filter.iid,filter.name)" class="cursor" ng-class="filter.name"><i class="fa fa-caret-right"></i>  {{filter.name2}}</a></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/category-products-->
+
+                        <div class="brands_products">
+                            <!--brands_products-->
+                            <h2>Offers</h2>
+                            <div class="brands-name">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li ng-show="offers==''">No Offers for {{filters[0].name}}</li>
+                                    <li ng-repeat="offer in offers"><a href="">{{offer.name}}</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <!--/brands_products-->
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="blog-post-area">
+                    <div class="single-blog-post">
+                        <div class="msg" ng-show="msgarea">
+                            <p class="text-center" style="padding:10px;">{{msg}}</p>
+                        </div>
+                        <!-- 
+						    <h3>Girls Pink T Shirt arrived in store</h3>
+						    <div class="post-meta">
+						        <ul>
+						            <li><i class="fa fa-user"></i> Mac Doe</li>
+						            <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
+						            <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+						        </ul>
+						    </div> -->
+                        <div class="category" ng-repeat="list in listings">
+                            <div class="col-xs-8">
+                                <div class="media commnets">
+                                    <a class="pull-left" ng-click="linkclick(list.listing)">
+                                        <img class="media-object mediumimage" src="{{list.logo|imagepath}}" alt="">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading onlycursor" ng-click="linkclick(list.listing)"><i class="fa fa-bookmark"></i><span>{{list.name}}</span></h4>
+                                        <p><i class="fa fa-location-arrow"></i><span class="med1">{{list.address | cut:true:50:' ...'}}</p>
+                            <p><i class="fa fa-mobile"></i><span class="med2">{{list.contactno}}</p>
+							<div class="social-icons pull-laft">
+							<div class="cat-btn" style="margin: -9px auto;">
+                            <p class="pull-left">
+                                <a class="btn btn-primary mrr" href="">Send SMS</a>
+                                <a class="btn btn-primary mrr" ng-click="sendemail(list.listing)">Send Email</a>
+                                <a class="btn btn-primary mrr enq " ng-click="onemailclick(list.listing);" style="position: absolute;
+left: 454px;">Enquiry</a>
+                                
+
+<!--                                <a class="btn btn-primary mrr" href="">Other Posts</a>-->
+                            </p>
+                            </div>
+
+
+                            
+  
+                          
+
+<!--
+                            <div class="img-cat" ng-if="list.type==1">
+                           <img src="{{'png/free.png'|imagepath2}}">
+                            </div>
+-->
+<!--
+                        <div class="cate-social">	
+							<span class='st_facebook_hcount' displayText='Facebook' style="height:0px"></span>
+                                            <span class='st_twitter_hcount' displayText='Tweet'></span>
+                                            <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+                                            <span class='st_googleplus_hcount' displayText='Google +'></span>
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                        <!--Comments-->
+                    </div>
+                    <div class="col-xs-4">
+                       <div style="padding-top:35px;">
+                        <h3>Rating</h3>
+
+                        <div class="star-rating" star-rating rating-value="list.rating" data-max="5" on-rating-selected="rateFunction(rating,list.listing)" readonly="readonly">
+                        </div>({{list.totalratings}} votes)
+                        <div class="alert" ng-class="alertmsg" role="alert" ng-if="ratingmsg!=''">
+                            {{ratingmsg}}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $(".panel-title").click(function () {
+        console.log("im in");
+    });
+</script>

@@ -1,0 +1,62 @@
+<div class="container">
+   
+   <div class="row">
+   
+   <div class="col-md-12">
+				<div class="banner">
+                   <img ng-src="{{'ad/ad.jpg' | imagepath1}}" ng-show="banner1.banner==''" width="100%">
+                   <img ng-src="{{'png/'+banner1.banner | imagepath1}}" ng-show="banner1.banner!=''" width="100%">
+                </div>
+                </div>
+   </div>
+    <div class="row" style="height:10px;">
+    </div>
+    
+     <div class="cat">
+    <div class="row" ng-repeat="subc in subcat">
+    
+    <div class="col-md-6" ng-repeat="cat in subc">
+   
+    <div class="sub-cat">
+        <a ng-click="waytoin(cat.id)"><i class="fa fa-caret-right"></i><span class="subcate-text"> {{cat.name}}</span></a>
+
+    </div>
+    </div>
+    
+<!--
+    <div class="sub-hover" ng-repeat="cat in subcat ">
+        <div class=" subcat">-->
+<!--
+        <a ng-click="waytoin(cat.id)" >
+           
+                <div class="pull-right subfa">
+                    <i class="fa fa-arrow-circle-o-right fa-2x"></i>
+                </div>
+                <h4>{{cat.name}}</h4>
+        </a>
+        </div>
+    </div>
+-->
+
+   </div>
+   <div class="col-md-2"></div>
+<!--
+   <div class="col-md-5">
+           <div class="sub-cat">
+        <i class="fa fa-caret-right"></i><span class="subcate-text"> All Restaurent</span><br>
+    
+        <i class="fa fa-caret-right"></i><span class="subcate-text"> All Restaurent</span><br>
+        <i class="fa fa-caret-right"></i><span class="subcate-text"> All Restaurent</span><br>
+        <i class="fa fa-caret-right"></i><span class="subcate-text"> All Restaurent</span><br>
+        <i class="fa fa-caret-right"></i><span class="subcate-text"> All Restaurent</span><br>
+        <i class="fa fa-caret-right"></i><span class="subcate-text"> All Restaurent</span><br>
+    </div>
+    
+       
+   </div>
+-->
+   
+   </div>
+    <div class="row" style="height:10px;">
+    </div>
+</div>
