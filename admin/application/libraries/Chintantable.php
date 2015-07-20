@@ -94,7 +94,7 @@ class Chintantable {
         $return=new stdClass();
         $return->query=$selectquery.$fromquery.$wherequery.$groupquery.$havingquery.$orderquery.$limitquery;
         $return->queryresult=$this->CI->db->query($return->query)->result();
-        $return->totalvalues=$this->CI->db->query("SELECT count(".$elements[0]->field.") as `totalcount` ".$fromquery.$wherequery.$groupquery.$havingquery)->row();
+        $return->totalvalues=$this->CI->db->query("SELECT count(".$elements[0]->field.") as `totalcount` ".$fromquery.$wherequery.$groupquery)->row();
         
         $return->totalvalues=intval($return->totalvalues->totalcount);
         

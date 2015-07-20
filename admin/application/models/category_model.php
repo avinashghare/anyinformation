@@ -401,6 +401,25 @@ ORDER BY `dist` ASC
 		return $query;
 	}
     
+    public function searcharea($city,$area)
+	{
+//        $areawhere="";
+//        if($area=="")
+//        {
+//            $areawhere="";
+//        }
+//        else
+//        {
+//            $areawhere=" AND `location`.`id`= '$area' ";
+//        }
+		$query=$this->db->query("SELECT `location`. `id`,`location`. `cityid`,`location`. `name`,`location`. `pincode` 
+FROM `location` 
+WHERE `location`. `name` LIKE '%$area%' AND `location`. `cityid`='$city'
+        LIMIT 0 , 10")->result();
+		
+		return $query;
+	}
+    
     public function getcategorytree($id) 
     {
         $return=new stdClass();

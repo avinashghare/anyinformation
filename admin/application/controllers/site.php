@@ -1394,15 +1394,15 @@ class Site extends CI_Controller
             $data[ 'isverified' ] =$this->listing_model->getisverifieddropdown();
             $data[ 'user' ] =$this->listing_model->getuserdropdown();
             $data[ 'city' ] =$this->city_model->getcitydropdown();
-            $data['before']=$this->listing_model->beforeedit($this->input->get('id'));
+            $data['before']=$this->listing_model->beforeedit($this->input->get_post('id'));
             $data[ 'category' ] =$this->category_model->getcategoryforlistingdropdown();
             $data[ 'status' ] =$this->listing_model->getstatusdropdown();
             $data[ 'area' ] =$this->city_model->getareadropdown();
-            $data[ 'selectedcategory' ] =$this->category_model->getselectedcategoryforlistingdropdown($this->input->get('id'));
+            $data[ 'selectedcategory' ] =$this->category_model->getselectedcategoryforlistingdropdown($this->input->get_post('id'));
             $data[ 'modeofpayment' ] =$this->modeofpayment_model->getmodeofpaymentforlistingdropdown();
-            $data[ 'selectedmodeofpayment' ] =$this->modeofpayment_model->getselectedmodeofpaymentforlistingdropdown($this->input->get('id'));
+            $data[ 'selectedmodeofpayment' ] =$this->modeofpayment_model->getselectedmodeofpaymentforlistingdropdown($this->input->get_post('id'));
             $data[ 'daysofoperation' ] =$this->modeofpayment_model->getdaysofoperationforlistingdropdown();
-            $data[ 'selecteddaysofoperation' ] =$this->modeofpayment_model->getselecteddaysofoperationforlistingdropdown($this->input->get('id'));
+            $data[ 'selecteddaysofoperation' ] =$this->modeofpayment_model->getselecteddaysofoperationforlistingdropdown($this->input->get_post('id'));
             $data['page']='editlisting';
             $data['title']='Edit listing';
             $this->load->view('template',$data);
@@ -1490,6 +1490,176 @@ class Site extends CI_Controller
 			$data['alertsuccess']="listing edited Successfully.";
 			
 			$data['redirect']="site/viewlisting";
+			//$data['other']="template=$template";
+			$this->load->view("redirect",$data);
+			
+		}
+	}
+    
+	function editdefaultlatlonglisting()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+		$data[ 'type' ] =$this->listing_model->gettypedropdown();
+        $data[ 'isverified' ] =$this->listing_model->getisverifieddropdown();
+        $data[ 'user' ] =$this->listing_model->getuserdropdown();
+        $data[ 'city' ] =$this->city_model->getcitydropdown();
+        $data[ 'area' ] =$this->city_model->getareadropdown();
+		$data[ 'status' ] =$this->listing_model->getstatusdropdown();
+		$data['before']=$this->listing_model->beforeedit($this->input->get('id'));
+//        $data[ 'category' ] =$this->category_model->getcategoryforlistingdropdown();
+        
+        $cat=$this->category_model->getcategorytreeforlisting(0);
+        $cat1=$this->getarray($cat,"");
+        
+        $data['category']=$cat1;
+        
+        $data[ 'selectedcategory' ] =$this->category_model->getselectedcategoryforlistingdropdown($this->input->get('id'));
+        $data[ 'modeofpayment' ] =$this->modeofpayment_model->getmodeofpaymentforlistingdropdown();
+        $data[ 'selectedmodeofpayment' ] =$this->modeofpayment_model->getselectedmodeofpaymentforlistingdropdown($this->input->get('id'));
+        $data[ 'daysofoperation' ] =$this->modeofpayment_model->getdaysofoperationforlistingdropdown();
+        $data[ 'selecteddaysofoperation' ] =$this->modeofpayment_model->getselecteddaysofoperationforlistingdropdown($this->input->get('id'));
+		$data['page']='editdefaultlatlonglisting';
+		$data['page2']='block/listingblock';
+		$data['title']='Edit listing';
+		$this->load->view('template',$data);
+	}
+       
+	function editdefaultlatlonglistingsubmit()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+		$this->form_validation->set_rules('name','Name','trim|required');
+		$this->form_validation->set_rules('user','User','trim');
+		$this->form_validation->set_rules('lat','latitude','trim');
+		$this->form_validation->set_rules('long','longitude','trim');
+		$this->form_validation->set_rules('address','Address','trim|');
+		$this->form_validation->set_rules('city','City','trim|max_length[30]');
+		$this->form_validation->set_rules('pincode','Pincode','trim|max_length[20]');
+		$this->form_validation->set_rules('state','state','trim|max_length[20]');
+		$this->form_validation->set_rules('country','country','trim|max_length[20]');
+        $this->form_validation->set_rules('description','Description','trim|');
+		$this->form_validation->set_rules('contact','contactno','trim');
+		$this->form_validation->set_rules('email','Email','trim|valid_email');
+        $this->form_validation->set_rules('website','Website','trim');
+		$this->form_validation->set_rules('facebookuserid','facebookuserid','trim');
+		$this->form_validation->set_rules('googleplus','googleplus','trim');
+		$this->form_validation->set_rules('twitter','twitter','trim');
+		$this->form_validation->set_rules('yearofestablishment','yearofestablishment','trim');
+		$this->form_validation->set_rules('timeofoperation_start','timeofoperation_start','trim');
+		$this->form_validation->set_rules('timeofoperation_end','timeofoperation_end','trim');
+		$this->form_validation->set_rules('type','type','trim');
+//		$this->form_validation->set_rules('credits','credits','trim');
+		$this->form_validation->set_rules('isverified','isverified','trim');
+		$this->form_validation->set_rules('video','video','trim');
+		$this->form_validation->set_rules('pointer','pointer','trim');
+		$this->form_validation->set_rules('area','area','trim');
+		$this->form_validation->set_rules('mobile','mobile','trim');
+        
+		if($this->form_validation->run() == FALSE)	
+		{
+			$data['alerterror'] = validation_errors();
+			$data[ 'status' ] =$this->user_model->getstatusdropdown();
+			$data[ 'type' ] =$this->listing_model->gettypedropdown();
+            $data[ 'isverified' ] =$this->listing_model->getisverifieddropdown();
+            $data[ 'user' ] =$this->listing_model->getuserdropdown();
+            $data[ 'city' ] =$this->city_model->getcitydropdown();
+            $data['before']=$this->listing_model->beforeedit($this->input->get_post('id'));
+            $data[ 'category' ] =$this->category_model->getcategoryforlistingdropdown();
+            $data[ 'status' ] =$this->listing_model->getstatusdropdown();
+            $data[ 'area' ] =$this->city_model->getareadropdown();
+            $data[ 'selectedcategory' ] =$this->category_model->getselectedcategoryforlistingdropdown($this->input->get_post('id'));
+            $data[ 'modeofpayment' ] =$this->modeofpayment_model->getmodeofpaymentforlistingdropdown();
+            $data[ 'selectedmodeofpayment' ] =$this->modeofpayment_model->getselectedmodeofpaymentforlistingdropdown($this->input->get_post('id'));
+            $data[ 'daysofoperation' ] =$this->modeofpayment_model->getdaysofoperationforlistingdropdown();
+            $data[ 'selecteddaysofoperation' ] =$this->modeofpayment_model->getselecteddaysofoperationforlistingdropdown($this->input->get_post('id'));
+            $data['page']='editdefaultlatlonglisting';
+            $data['title']='Edit listing';
+            $this->load->view('template',$data);
+		}
+		else
+		{
+            $id=$this->input->post('id');
+            $name=$this->input->post('name');
+			$user=$this->input->post('user');
+			$lat=$this->input->post('lat');
+			$long=$this->input->post('long');
+            $address=$this->input->post('address');
+            $city=$this->input->post('city');
+            $pincode=$this->input->post('pincode');
+            $state=$this->input->post('state');
+			$country=$this->input->post('country');
+            $description=$this->input->post('description');
+			$contact=$this->input->post('contact');
+			$email=$this->input->post('email');
+            $website=$this->input->post('website');
+			$facebookuserid=$this->input->post('facebookuserid');
+			$googleplus=$this->input->post('googleplus');
+			$twitter=$this->input->post('twitter');
+			$yearofestablishment=$this->input->post('yearofestablishment');
+			$timeofoperation_start=$this->input->post('timeofoperation_start');
+			$timeofoperation_end=$this->input->post('timeofoperation_end');
+			$type=$this->input->post('type');
+			$credits=$this->input->post('credits');
+			$isverified=$this->input->post('isverified');
+			$video=$this->input->post('video');
+			$pointer=$this->input->post('pointer');
+			$area=$this->input->post('area');
+			$mobile=$this->input->post('mobile');
+			$status=$this->input->post('status');
+            
+            $category=$this->input->post('category');
+            $modeofpayment=$this->input->post('modeofpayment');
+            $daysofoperation=$this->input->post('daysofoperation');
+            $pointerstartdate=$this->input->post('pointerstartdate');
+            $pointerenddate=$this->input->post('pointerenddate');
+            
+            $config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$this->load->library('upload', $config);
+			$filename="logo";
+			$logo="";
+			if (  $this->upload->do_upload($filename))
+			{
+				$uploaddata = $this->upload->data();
+				$logo=$uploaddata['file_name'];
+                
+                $config_r['source_image']   = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE;///add this
+                $config_r['width']   = 800;
+                $config_r['height'] = 800;
+                $config_r['quality']    = 100;
+                //end of configs
+
+                $this->load->library('image_lib', $config_r); 
+                $this->image_lib->initialize($config_r);
+                if(!$this->image_lib->resize())
+                {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                }  
+                else
+                {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $logo=$this->image_lib->dest_image;
+                    //return false;
+                }
+                
+			}
+            if($logo=="")
+            {
+                $logo=$this->listing_model->getlogobylistingid($id);
+                $logo=$logo->logo;
+            }
+            
+			if($this->listing_model->edit($id,$name,$user,$lat,$long,$address,$city,$pincode,$state,$country,$description,$contact,$email,$website,$facebookuserid,$googleplus,$twitter,$yearofestablishment,$timeofoperation_start,$timeofoperation_end,$type,$credits,$isverified,$video,$logo,$category,$modeofpayment,$daysofoperation,$pointer,$area,$mobile,$status,$pointerstartdate,$pointerenddate)==0)
+			$data['alerterror']="listing Editing was unsuccesful";
+			else
+			$data['alertsuccess']="listing edited Successfully.";
+			
+			$data['redirect']="site/viewdefaultlatlonglisting";
 			//$data['other']="template=$template";
 			$this->load->view("redirect",$data);
 			
@@ -4280,6 +4450,187 @@ class Site extends CI_Controller
 			$this->load->view("redirect",$data);
 		}
 	}
+    
+    
+    
+    function viewduplicatelisting()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+		$data['page']='viewduplicatelisting';
+        
+        $ids=$this->listing_model->getidsofduplicatedata();
+        $data['base_url'] = site_url("site/viewduplicatelistingjson?ids=".$ids);
+        
+        
+		$data['title']='View Duplicate listing';
+		$this->load->view('template',$data);
+	} 
+    
+    function viewduplicatelistingjson()
+	{
+        $ids=$this->input->get('ids');
+		$access = array("1");
+		$this->checkaccess($access);
+        
+        $elements=array();
+        $elements[0]=new stdClass();
+        $elements[0]->field="`listing`.`id`";
+        $elements[0]->sort="1";
+        $elements[0]->header="ID";
+        $elements[0]->alias="id";
+        
+        $elements[1]=new stdClass();
+        $elements[1]->field="`listing`.`name`";
+        $elements[1]->sort="1";
+        $elements[1]->header="Name";
+        $elements[1]->alias="name";
+        
+        $elements[2]=new stdClass();
+        $elements[2]->field="`listing`.`address`";
+        $elements[2]->sort="1";
+        $elements[2]->header="Address";
+        $elements[2]->alias="address";
+        
+        $elements[3]=new stdClass();
+        $elements[3]->field="`listing`.`email`";
+        $elements[3]->sort="1";
+        $elements[3]->header="Email";
+        $elements[3]->alias="email";
+        
+        $elements[4]=new stdClass();
+        $elements[4]->field="`listing`.`contactno`";
+        $elements[4]->sort="1";
+        $elements[4]->header="Contact No";
+        $elements[4]->alias="contactno";
+        
+        $elements[5]=new stdClass();
+        $elements[5]->field="`listing`.`pointer`";
+        $elements[5]->sort="1";
+        $elements[5]->header="Pointer";
+        $elements[5]->alias="pointer";
+        
+        $elements[6]=new stdClass();
+        $elements[6]->field="`listing`.`area`";
+        $elements[6]->sort="1";
+        $elements[6]->header="Areaid";
+        $elements[6]->alias="areaid";
+        
+        $elements[7]=new stdClass();
+        $elements[7]->field="`location`.`name`";
+        $elements[7]->sort="1";
+        $elements[7]->header="Area";
+        $elements[7]->alias="area";
+        
+        $search=$this->input->get_post("search");
+        $pageno=$this->input->get_post("pageno");
+        $orderby=$this->input->get_post("orderby");
+        $orderorder=$this->input->get_post("orderorder");
+        $maxrow=$this->input->get_post("maxrow");
+        if($maxrow=="")
+        {
+            $maxrow=20;
+        }
+        
+        if($orderby=="")
+        {
+            $orderby="name";
+            $orderorder="ASC";
+        }
+       
+        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing` LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`","WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1 AND `listing`.`id` IN $ids");
+        
+		$this->load->view("json",$data);
+	} 
+    
+    
+    function viewdefaultlatlonglisting()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+		$data['page']='viewdefaultlatlonglisting';
+        
+        $data['base_url'] = site_url("site/viewdefaultlatlonglistingjson");
+        
+        
+		$data['title']='View Defalt Lat Long listing';
+		$this->load->view('template',$data);
+	} 
+    
+    function viewdefaultlatlonglistingjson()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+        
+        $elements=array();
+        $elements[0]=new stdClass();
+        $elements[0]->field="`listing`.`id`";
+        $elements[0]->sort="1";
+        $elements[0]->header="ID";
+        $elements[0]->alias="id";
+        
+        $elements[1]=new stdClass();
+        $elements[1]->field="`listing`.`name`";
+        $elements[1]->sort="1";
+        $elements[1]->header="Name";
+        $elements[1]->alias="name";
+        
+        $elements[2]=new stdClass();
+        $elements[2]->field="`listing`.`address`";
+        $elements[2]->sort="1";
+        $elements[2]->header="Address";
+        $elements[2]->alias="address";
+        
+        $elements[3]=new stdClass();
+        $elements[3]->field="`listing`.`email`";
+        $elements[3]->sort="1";
+        $elements[3]->header="Email";
+        $elements[3]->alias="email";
+        
+        $elements[4]=new stdClass();
+        $elements[4]->field="`listing`.`contactno`";
+        $elements[4]->sort="1";
+        $elements[4]->header="Contact No";
+        $elements[4]->alias="contactno";
+        
+        $elements[5]=new stdClass();
+        $elements[5]->field="`listing`.`pointer`";
+        $elements[5]->sort="1";
+        $elements[5]->header="Pointer";
+        $elements[5]->alias="pointer";
+        
+        $elements[6]=new stdClass();
+        $elements[6]->field="`listing`.`area`";
+        $elements[6]->sort="1";
+        $elements[6]->header="Areaid";
+        $elements[6]->alias="areaid";
+        
+        $elements[7]=new stdClass();
+        $elements[7]->field="`location`.`name`";
+        $elements[7]->sort="1";
+        $elements[7]->header="Area";
+        $elements[7]->alias="area";
+        
+        $search=$this->input->get_post("search");
+        $pageno=$this->input->get_post("pageno");
+        $orderby=$this->input->get_post("orderby");
+        $orderorder=$this->input->get_post("orderorder");
+        $maxrow=$this->input->get_post("maxrow");
+        if($maxrow=="")
+        {
+            $maxrow=20;
+        }
+        
+        if($orderby=="")
+        {
+            $orderby="name";
+            $orderorder="ASC";
+        }
+       
+        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing` LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`","WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1 AND `listing`.`lat`='18.9750' AND `listing`.`long`='72.8258'");
+        
+		$this->load->view("json",$data);
+	} 
     
 }
 ?>

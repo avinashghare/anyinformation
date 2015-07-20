@@ -642,7 +642,7 @@ WHERE `listingcategory`.`category`='$id' ";
         
         foreach($id as $idu)
         {
-            $query=$this->db->query("UPDATE `listing` SET `deletestatus`=0 WHERE `id`='$idu'");
+            $query=$this->db->query("DELETE FROM `listing` WHERE `id`='$idu'");
         }
         if($query){
             return 1;
@@ -803,6 +803,35 @@ INNER JOIN `category` ON `listingcategory`.`category`=`category`.`id`");
             redirect(base_url("csvgenerated/listing_$timestamp.csv"), "refresh");
              echo "File written!";
         }
+	}
+    
+    
+	function getidsofduplicatedata()
+	{
+		$query="SELECT COUNT(`listing`. `id`) AS `count`,`listing`. `id`,`listing`. `name`,`listing`. `user`,`listing`. `lat`,`listing`. `long`,`listing`. `address`,`listing`. `city`,`listing`. `pincode`,`listing`. `state`,`listing`. `country`,`listing`. `description`,`listing`. `logo`,`listing`. `contactno`,`listing`. `mobile`,`listing`. `email`,`listing`. `website`,`listing`. `facebook`,`listing`. `twitter`,`listing`. `googleplus`,`listing`. `yearofestablishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `credits`,`listing`. `isverified`,`listing`. `video`,`listing`. `deletestatus`,`listing`. `pointer`,`listing`. `area`,`listing`. `status`,`listing`. `pointerstartdate`,`listing`. `pointerenddate`,`listing`. `timestamp`,GROUP_CONCAT(DISTINCT `listing`. `id` SEPARATOR ',') AS `ids` 
+FROM `listing`
+GROUP BY `listing`.`name`,`listing`.`area`,`listing`.`contactno`,`listing`.`address`
+HAVING `count`>1";
+	   
+		$query=$this->db->query($query)->result();
+        $allids="(";
+		foreach($query as $key=>$p_row)
+		{
+			$ids = $p_row->ids;
+            if($key==0)
+            {
+                $allids.=$ids;
+            }
+            else
+            {
+                $allids.=",".$ids;
+            }
+		}
+        rtrim($allids,',');
+        ltrim($allids,',');
+        $allids.=")";
+//        echo $allids;
+		return $allids;
 	}
 }
 ?>
