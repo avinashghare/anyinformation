@@ -246,7 +246,7 @@ class Json extends CI_Controller
         $data['message']=$this->category_model->getfilter($id);
 		$this->load->view('json',$data);
     }
-    public function getlistingbycategory()
+    public function getlistingbycategorywithoutpagination()
     {
         $categoryid=$this->input->get_post('id');
         $data['message']=$this->listing_model->getlistingbycategory($categoryid);
@@ -485,6 +485,251 @@ class Json extends CI_Controller
         }
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    function getlistingbycategory()
+	{
+        
+        $id=$this->input->get_post('id');
+        
+//        $q="SELECT `listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`, `listing`. `user`, `listing`.`lat`, `listing`.`long`, `listing`.`address`, `listing`.`city`, `listing`.`pincode`, `listing`.`state`, `listing`.`country`, `listing`.`description`, `listing`.`logo`, `listing`.`contactno`, `listing`.`email`, `listing`.`website`, `listing`.`facebook`, `listing`.`twitter`, `listing`.`googleplus`, `listing`.`yearofestablishment`, `listing`.`timeofoperation_start`, `listing`.`timeofoperation_end`, `listing`.`type`, `listing`.`credits`, `listing`.`isverified`, `listing`.`area`, `listing`.`video`,`category`.`banner`,`category`.`name` AS `categoryname`,`listing`.`deletestatus` ,`listings`.`totalratings`,`listings`.`rating`
+//FROM `listingcategory`
+//LEFT OUTER JOIN `listing` ON `listing`.`id`=`listingcategory`.`listing`
+//LEFT OUTER JOIN `category` ON `listingcategory`.`category`=`category`.`id`
+//LEFT OUTER JOIN (SELECT COUNT(id) AS `totalratings`,ROUND(AVG(`rating`)) AS `rating`,`listing` FROM `userlistingrating` GROUP BY `listing`) as `listings` ON `listings`.`listing`=`listing`.`id`
+//WHERE `listingcategory`.`category`='$id' AND `listing`.`deletestatus`=1 AND `listing`.`status`=1 ORDER BY `listing`.`pointer` DESC";
+        
+        $elements=array();
+        $elements[0]=new stdClass();
+        $elements[0]->field="`listingcategory`.`listing`";
+        $elements[0]->sort="1";
+        $elements[0]->header="listing";
+        $elements[0]->alias="listing";
+        
+        $elements[1]=new stdClass();
+        $elements[1]->field="`listingcategory`.`category`";
+        $elements[1]->sort="1";
+        $elements[1]->header="category";
+        $elements[1]->alias="category";
+        
+        $elements[2]=new stdClass();
+        $elements[2]->field="`listing`.`name`";
+        $elements[2]->sort="1";
+        $elements[2]->header="name";
+        $elements[2]->alias="name";
+        
+        $elements[3]=new stdClass();
+        $elements[3]->field="`listing`.`id`";
+        $elements[3]->sort="1";
+        $elements[3]->header="listingid";
+        $elements[3]->alias="listingid";
+        
+        $elements[4]=new stdClass();
+        $elements[4]->field="`listing`. `user`";
+        $elements[4]->sort="1";
+        $elements[4]->header="user";
+        $elements[4]->alias="user";
+        
+        $elements[5]=new stdClass();
+        $elements[5]->field="`listing`.`lat`";
+        $elements[5]->sort="1";
+        $elements[5]->header="lat";
+        $elements[5]->alias="lat";
+        
+        $elements[6]=new stdClass();
+        $elements[6]->field="`listing`.`long`";
+        $elements[6]->sort="1";
+        $elements[6]->header="long";
+        $elements[6]->alias="long";
+        
+        $elements[7]=new stdClass();
+        $elements[7]->field="`listing`.`address`";
+        $elements[7]->sort="1";
+        $elements[7]->header="address";
+        $elements[7]->alias="address";
+        
+        $elements[8]=new stdClass();
+        $elements[8]->field="`listing`.`city`";
+        $elements[8]->sort="1";
+        $elements[8]->header="city";
+        $elements[8]->alias="city";
+        
+        $elements[9]=new stdClass();
+        $elements[9]->field="`listing`.`pincode`";
+        $elements[9]->sort="1";
+        $elements[9]->header="pincode";
+        $elements[9]->alias="pincode";
+        
+        $elements[10]=new stdClass();
+        $elements[10]->field="`listing`.`state`";
+        $elements[10]->sort="1";
+        $elements[10]->header="state";
+        $elements[10]->alias="state";
+        
+        $elements[11]=new stdClass();
+        $elements[11]->field="`listing`.`country`";
+        $elements[11]->sort="1";
+        $elements[11]->header="country";
+        $elements[11]->alias="country";
+        
+        $elements[12]=new stdClass();
+        $elements[12]->field="`listing`.`description`";
+        $elements[12]->sort="1";
+        $elements[12]->header="description";
+        $elements[12]->alias="description";
+        
+        $elements[13]=new stdClass();
+        $elements[13]->field="`listing`.`logo`";
+        $elements[13]->sort="1";
+        $elements[13]->header="logo";
+        $elements[13]->alias="logo";
+        
+        $elements[14]=new stdClass();
+        $elements[14]->field="`listing`.`contactno`";
+        $elements[14]->sort="1";
+        $elements[14]->header="contactno";
+        $elements[14]->alias="contactno";
+        
+        $elements[15]=new stdClass();
+        $elements[15]->field="`listing`.`email`";
+        $elements[15]->sort="1";
+        $elements[15]->header="email";
+        $elements[15]->alias="email";
+        
+        $elements[16]=new stdClass();
+        $elements[16]->field="`listing`.`website`";
+        $elements[16]->sort="1";
+        $elements[16]->header="website";
+        $elements[16]->alias="website";
+        
+        $elements[17]=new stdClass();
+        $elements[17]->field="`listing`.`facebook`";
+        $elements[17]->sort="1";
+        $elements[17]->header="facebook";
+        $elements[17]->alias="facebook";
+        
+        $elements[18]=new stdClass();
+        $elements[18]->field="`listing`.`twitter`";
+        $elements[18]->sort="1";
+        $elements[18]->header="twitter";
+        $elements[18]->alias="twitter";
+        
+        $elements[19]=new stdClass();
+        $elements[19]->field="`listing`.`googleplus`";
+        $elements[19]->sort="1";
+        $elements[19]->header="googleplus";
+        $elements[19]->alias="googleplus";
+        
+        $elements[20]=new stdClass();
+        $elements[20]->field="`listing`.`yearofestablishment`";
+        $elements[20]->sort="1";
+        $elements[20]->header="yearofestablishment";
+        $elements[20]->alias="yearofestablishment";
+        
+        $elements[21]=new stdClass();
+        $elements[21]->field="`listing`.`timeofoperation_start`";
+        $elements[21]->sort="1";
+        $elements[21]->header="timeofoperation_start";
+        $elements[21]->alias="timeofoperation_start";
+        
+        $elements[22]=new stdClass();
+        $elements[22]->field="`listing`.`timeofoperation_end`";
+        $elements[22]->sort="1";
+        $elements[22]->header="timeofoperation_end";
+        $elements[22]->alias="timeofoperation_end";
+        
+        $elements[23]=new stdClass();
+        $elements[23]->field="`listing`.`type`";
+        $elements[23]->sort="1";
+        $elements[23]->header="type";
+        $elements[23]->alias="type";
+        
+        $elements[24]=new stdClass();
+        $elements[24]->field="`listing`.`credits`";
+        $elements[24]->sort="1";
+        $elements[24]->header="credits";
+        $elements[24]->alias="credits";
+        
+        $elements[25]=new stdClass();
+        $elements[25]->field="`listing`.`isverified`";
+        $elements[25]->sort="1";
+        $elements[25]->header="isverified";
+        $elements[25]->alias="isverified";
+        
+        $elements[26]=new stdClass();
+        $elements[26]->field="`listing`.`isverified`";
+        $elements[26]->sort="1";
+        $elements[26]->header="isverified";
+        $elements[26]->alias="isverified";
+        
+        $elements[27]=new stdClass();
+        $elements[27]->field="`listing`.`area`";
+        $elements[27]->sort="1";
+        $elements[27]->header="area";
+        $elements[27]->alias="area";
+        
+        $elements[28]=new stdClass();
+        $elements[28]->field="`listing`.`video`";
+        $elements[28]->sort="1";
+        $elements[28]->header="video";
+        $elements[28]->alias="video";
+        
+        $elements[29]=new stdClass();
+        $elements[29]->field="`category`.`banner`";
+        $elements[29]->sort="1";
+        $elements[29]->header="banner";
+        $elements[29]->alias="banner";
+        
+        $elements[30]=new stdClass();
+        $elements[30]->field="`category`.`name`";
+        $elements[30]->sort="1";
+        $elements[30]->header="categoryname";
+        $elements[30]->alias="categoryname";
+        
+        $elements[31]=new stdClass();
+        $elements[31]->field="`listing`.`deletestatus`";
+        $elements[31]->sort="1";
+        $elements[31]->header="deletestatus";
+        $elements[31]->alias="deletestatus";
+        
+        $elements[32]=new stdClass();
+        $elements[32]->field="`listings`.`totalratings`";
+        $elements[32]->sort="1";
+        $elements[32]->header="totalratings";
+        $elements[32]->alias="totalratings";
+        
+        $elements[33]=new stdClass();
+        $elements[33]->field="`listings`.`rating`";
+        $elements[33]->sort="1";
+        $elements[33]->header="rating";
+        $elements[33]->alias="rating";
+        
+        $search=$this->input->get_post("search");
+        $pageno=$this->input->get_post("pageno");
+        $orderby=$this->input->get_post("orderby");
+        $orderorder=$this->input->get_post("orderorder");
+        $maxrow=$this->input->get_post("maxrow");
+        if($maxrow=="")
+        {
+            $maxrow=20;
+        }
+        
+        if($orderby=="")
+        {
+            $orderby="id";
+            $orderorder="ASC";
+        }
+       
+        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listingcategory` LEFT OUTER JOIN `listing` ON `listing`.`id`=`listingcategory`.`listing` LEFT OUTER JOIN `category` ON `listingcategory`.`category`=`category`.`id` LEFT OUTER JOIN (SELECT COUNT(id) AS `totalratings`,ROUND(AVG(`rating`)) AS `rating`,`listing` FROM `userlistingrating` GROUP BY `listing`) as `listings` ON `listings`.`listing`=`listing`.`id`","WHERE `listingcategory`.`category`='$id' AND `listing`.`deletestatus`=1 AND `listing`.`status`=1");
+        
+		$this->load->view("json",$data);
+	} 
     
 }
 ?>
