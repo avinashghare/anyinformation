@@ -246,7 +246,8 @@ class Listing_model extends CI_Model
 	}
 	function deletelisting($id)
 	{
-		$query=$this->db->query("UPDATE `listing` SET `deletestatus`=0 WHERE `id`='$id'");
+		$query=$this->db->query("DELETE FROM `listing` WHERE `id`='$id'");
+        $querylistingcategorydelete=$this->db->query("DELETE FROM `listingcategory` WHERE `listing`='$id'");
 	}
 	function changepassword($id,$password)
 	{
@@ -643,6 +644,7 @@ WHERE `listingcategory`.`category`='$id' ";
         foreach($id as $idu)
         {
             $query=$this->db->query("DELETE FROM `listing` WHERE `id`='$idu'");
+            $query=$this->db->query("DELETE FROM `listingcategory` WHERE `listing`='$idu'");
         }
         if($query){
             return 1;
@@ -655,6 +657,7 @@ WHERE `listingcategory`.`category`='$id' ";
     {
 //            $query=$this->db->query("UPDATE `listing` SET `deletestatus`=0 ");
         $query=$this->db->query("DELETE FROM `listing`");
+        $query2=$this->db->query("DELETE FROM `listingcategory`");
         return 1;
         
     }
@@ -806,12 +809,43 @@ INNER JOIN `category` ON `listingcategory`.`category`=`category`.`id`");
 	}
     
     
-	function getidsofduplicatedata()
+    function exportduplicatelistingcsv($ids)
 	{
-		$query="SELECT COUNT(`listing`. `id`) AS `count`,`listing`. `id`,`listing`. `name`,`listing`. `user`,`listing`. `lat`,`listing`. `long`,`listing`. `address`,`listing`. `city`,`listing`. `pincode`,`listing`. `state`,`listing`. `country`,`listing`. `description`,`listing`. `logo`,`listing`. `contactno`,`listing`. `mobile`,`listing`. `email`,`listing`. `website`,`listing`. `facebook`,`listing`. `twitter`,`listing`. `googleplus`,`listing`. `yearofestablishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `credits`,`listing`. `isverified`,`listing`. `video`,`listing`. `deletestatus`,`listing`. `pointer`,`listing`. `area`,`listing`. `status`,`listing`. `pointerstartdate`,`listing`. `pointerenddate`,`listing`. `timestamp`,GROUP_CONCAT(DISTINCT `listing`. `id` SEPARATOR ',') AS `ids` 
+		$this->load->dbutil();
+		$query=$this->db->query("SELECT `listing`.`id`,`listing`. `name` AS `Name`,`listing`. `lat` AS `Latitude`,`listing`. `long` AS `Longitude`,`listing`. `address` AS `Address`,`city`.`name` AS `City`,`listing`. `pincode` AS `Pincode`,`listing`. `state` AS `State`,`listing`. `country` AS `Country`,`listing`. `description` AS `Description`,`listing`. `logo` AS `Logo`,`listing`. `contactno` AS `Contact Number`,`listing`. `mobile` AS `Mobile Number`,`listing`. `email` AS `Email`,`listing`. `yearofestablishment` AS `Year Of Establishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `video`,`listing`. `pointer`,`location`.`name` AS `Area`,`listing`. `pointerstartdate`,`listing`. `pointerenddate` , GROUP_CONCAT(`category`.`name`) AS `category`
+FROM `listing` 
+LEFT OUTER JOIN `location` ON `listing`.`area`=`location`.`id`
+LEFT OUTER JOIN `city` ON `location`.`cityid`=`city`.`id`
+INNER JOIN `listingcategory` ON `listingcategory`.`listing`=`listing`.`id`
+INNER JOIN `category` ON `listingcategory`.`category`=`category`.`id`
+WHERE `listing`.`id` IN $ids");
+
+       $content= $this->dbutil->csv_from_result($query);
+        //$data = 'Some file data';
+        $timestamp=new DateTime();
+        $timestamp=$timestamp->format('Y-m-d_H.i.s');
+        if ( ! write_file("./csvgenerated/DuplicateListings_$timestamp.csv", $content))
+        {
+             echo "Unable to write the file";
+        }
+        else
+        {
+            redirect(base_url("csvgenerated/DuplicateListings_$timestamp.csv"), "refresh");
+             echo "File written!";
+        }
+	}
+    
+    
+	function getidsofduplicatedata($page,$max)
+	{
+        
+        $first=($page-1)*$max;
+        
+		$query="SELECT COUNT(`listing`. `id`) AS `count`,GROUP_CONCAT(DISTINCT `listing`. `id` SEPARATOR ',') AS `ids` 
 FROM `listing`
 GROUP BY `listing`.`name`,`listing`.`area`,`listing`.`contactno`,`listing`.`address`
-HAVING `count`>1";
+HAVING `count`>1 LIMIY $first,$max";
+        
 	   
 		$query=$this->db->query($query)->result();
         $allids="(";
@@ -832,6 +866,53 @@ HAVING `count`>1";
         $allids.=")";
 //        echo $allids;
 		return $allids;
+	}
+    
+    function viewduplicatelistingsnew($startfrom,$totallength)
+	{
+		$queryforids=$this->db->query("SELECT COUNT(`listing`. `id`) AS `count`,GROUP_CONCAT(DISTINCT `listing`. `id` SEPARATOR ',') AS `ids` 
+FROM `listing`
+GROUP BY `listing`.`name`,`listing`.`area`,`listing`.`contactno`,`listing`.`address`
+HAVING `count`>1 LIMIT $startfrom,$totallength")->result();
+        
+        $allids="(";
+		foreach($queryforids as $key=>$p_row)
+		{
+			$ids = $p_row->ids;
+            if($key==0)
+            {
+                $allids.=$ids;
+            }
+            else
+            {
+                $allids.=",".$ids;
+            }
+		}
+        rtrim($allids,',');
+        ltrim($allids,',');
+        $allids.=")";
+        
+        
+		$query=$this->db->query("SELECT  `listing`.`id`  AS `id` ,  `listing`.`name`  AS `name` ,  `listing`.`address`  AS `address` ,  `listing`.`email`  AS `email` ,  `listing`.`contactno`  AS `contactno` ,  `listing`.`pointer`  AS `pointer` ,  `listing`.`area`  AS `areaid` ,  `location`.`name`  AS `area` ,  1   FROM `listing` LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`  WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1 AND `listing`.`id` IN $allids")->result();
+        
+        
+        $return=new stdClass();
+        $return->query=$query;
+        $countvalue=count($queryforids);
+        $return->totalcount=$countvalue;
+        print_r($return);
+		return $return;
+        
+        
+        
+//        $return->totalcount=$this->db->query("SELECT count(*) as `totalcount` FROM `listing`
+//GROUP BY `listing`.`name`,`listing`.`area`,`listing`.`contactno`,`listing`.`address`
+//HAVING `count`>1 ")->row();
+//        $return->totalcount=$return->totalcount->totalcount;
+        
+        
+        
+//		return $query;
 	}
 }
 ?>

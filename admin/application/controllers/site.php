@@ -3442,7 +3442,7 @@ class Site extends CI_Controller
 		$this->checkaccess($access);
         $config['upload_path'] = './uploads/';
         $config['allowed_types'] = '*';
-        $config['max_size'] = '1000';
+        $config['max_size'] = '1000000';
         $this->load->library('upload', $config);
         $filename="file";
         $file="";
@@ -3451,6 +3451,13 @@ class Site extends CI_Controller
             $uploaddata = $this->upload->data();
             $file=$uploaddata['file_name'];
             $filepath=$uploaddata['file_path'];
+        }
+        else
+        {
+            $data['alerterror']=$this->upload->display_errors();
+
+            $data['redirect']="site/viewlisting";
+            $this->load->view("redirect",$data);
         }
         $fullfilepath=$filepath."".$file;
         $file = $this->csvreader->parse_file($fullfilepath);
@@ -4402,6 +4409,17 @@ class Site extends CI_Controller
 	}
     
     
+    	public function exportduplicatelistingcsv()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+        $ids=$this->listing_model->getidsofduplicatedata();
+		$this->listing_model->exportduplicatelistingcsv($ids);
+        $data['redirect']="site/viewduplicatelisting";
+        $this->load->view("redirect",$data);
+	}
+    
+    
 	public function deletelistingbycategory()
 	{
 		$access = array("1");
@@ -4459,7 +4477,7 @@ class Site extends CI_Controller
 		$this->checkaccess($access);
 		$data['page']='viewduplicatelisting';
         
-        $ids=$this->listing_model->getidsofduplicatedata();
+        
         $data['base_url'] = site_url("site/viewduplicatelistingjson?ids=".$ids);
         
         
@@ -4469,6 +4487,15 @@ class Site extends CI_Controller
     
     function viewduplicatelistingjson()
 	{
+        $search=$this->input->get_post("search");
+        $pageno=$this->input->get_post("pageno");
+        $orderby=$this->input->get_post("orderby");
+        $orderorder=$this->input->get_post("orderorder");
+        $maxrow=$this->input->get_post("maxrow");
+        
+        $ids=$this->listing_model->getidsofduplicatedata($pageno,$maxrow);
+        
+        
         $ids=$this->input->get('ids');
 		$access = array("1");
 		$this->checkaccess($access);
@@ -4522,11 +4549,7 @@ class Site extends CI_Controller
         $elements[7]->header="Area";
         $elements[7]->alias="area";
         
-        $search=$this->input->get_post("search");
-        $pageno=$this->input->get_post("pageno");
-        $orderby=$this->input->get_post("orderby");
-        $orderorder=$this->input->get_post("orderorder");
-        $maxrow=$this->input->get_post("maxrow");
+        
         if($maxrow=="")
         {
             $maxrow=20;
@@ -4631,6 +4654,28 @@ class Site extends CI_Controller
         
 		$this->load->view("json",$data);
 	} 
+    
+	function viewduplicatelistingsnew()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+        $pagestart = $this->uri->segment(3, 0);        
+        if($pagestart=="")
+        {
+            $pagestart=0;
+        }
+//        $config['per_page'] = 20; 
+        $modelquery=$this->listing_model->viewduplicatelistingsnew($pagestart,$this->config->item("per_page"));
+        
+        $config['base_url'] = site_url().'/site/viewduplicatelistingsnew/';
+        $config['total_rows'] = $modelquery->totalcount;
+        
+        $this->pagination->initialize($config); 
+		$data['table']=$modelquery->query;
+//		$data['page']='viewduplicatelistingsnew';
+//		$data['title']='View Duplicate Listings';
+//		$this->load->view('template',$data);
+	}
     
 }
 ?>

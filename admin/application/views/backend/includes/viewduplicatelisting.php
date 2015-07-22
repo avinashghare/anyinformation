@@ -1,16 +1,8 @@
 <div class=" row" style="padding:1% 0;">
-
+<div class="row">
 	<div class="col-md-6">
-	<?php
-        $userid=$this->session->userdata('id');
-        $accesslevel=$this->session->userdata('accesslevel');
-        if($userid==74 && $accesslevel==1)
-        {
-        ?>
-		<a class="btn btn-danger"  href="<?php echo site_url('site/tejasdelete'); ?>" onclick="return confirm('Are you sure you want to delete?')"><i class="icon-upload"></i>DELETE ALL LISTING</a> &nbsp; 
-		<?php
-        }
-        ?>
+	
+		<div class=" pull-right col-md-1 createbtn" ><a class="btn btn-primary" href="<?php echo site_url('site/exportduplicatelistingcsv'); ?>"target="_blank"><i class="icon-plus"></i>Export to CSV </a></div>
 	</div>
 	<div class="col-md-3">
 	
