@@ -1,6 +1,6 @@
 //var onlyadminurl = "http://mafiawarloots.com/foranyinformation/";
-//var onlyadminurl="http://localhost/forany2/admin/";
-var onlyadminurl="http://www.anyinformation.com/admin/";
+var onlyadminurl = "http://localhost/anyinformation/admin/";
+//var onlyadminurl="http://www.anyinformation.com/admin/";
 //var onlyadminurl="http://www.foranyinformation.com/admin/";
 var adminurl = onlyadminurl + "index.php/json/";
 //var adminurl="http://localhost/foranyinformation/index.php/json/";
@@ -15,7 +15,7 @@ var restservice = angular.module('restservice', [])
     return {
         getmap: function (data) {
             return $http.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + data + "&sensor=false", {});
-//            return $http.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + data + "&key=AIzaSyAj0OXepKIgjTlZiPe_ZVYTDjL8rYpobgQ", {});
+            //            return $http.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + data + "&key=AIzaSyAj0OXepKIgjTlZiPe_ZVYTDjL8rYpobgQ", {});
         },
         recentvisit: function (id) {
             //            console.log("my recent id");
@@ -161,8 +161,8 @@ var restservice = angular.module('restservice', [])
         sendemail: function (userid, listingid) {
             return $http.get(adminurl + "sendemail?userid=" + userid + "&listingid=" + listingid, {});
         },
-        getlistingbycategory: function (id) {
-            return $http.get(adminurl + "getlistingbycategory?id=" + id, {});
+        getlistingbycategory: function (pagedata) {
+            return $http.get(adminurl + "getlistingbycategory?id=" + pagedata.search + "&pageno=" + pagedata.page + "&maxrow=" + pagedata.limit, {});
         },
         enquiryuser: function (name, email, phone, comment) {
             return $http.get(adminurl + "addenquiryoflistingfromfrontend?listingid=" + $.jStorage.get("listingid") + "&name=" + name + "&email=" + email + "&phone=" + phone + "&comment=" + comment, {});
@@ -199,6 +199,9 @@ var restservice = angular.module('restservice', [])
         },
         signup: function (firstname, lastname, phoneno, email, password) {
             return $http.get(adminurl + "signup?firstname=" + firstname + "&lastname=" + lastname + "&phoneno=" + phoneno + "&email=" + email + "&password=" + password, {});
+        },
+        searcharea: function (text, city) {
+            return $http.get(adminurl + "searcharea?cityid=" + city + "&area=" + text, {});
         }
 
     }

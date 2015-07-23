@@ -1,5 +1,5 @@
 <section>
-    <div class="container">
+    <div id="link" class="container">
         <toaster-container></toaster-container>
         <div class="banner">
             <img ng-src="{{banner.banner | imagepath3}}" ng-show="banner.banner==''" width="100%">
@@ -105,25 +105,37 @@ left: 454px;">Enquiry</a>
                         <!--Comments-->
                     </div>
                     <div class="col-xs-4">
-                       <div style="padding-top:35px;">
-                        <h3>Rating</h3>
+                        <div style="padding-top:35px;">
+                            <h3>Rating</h3>
 
-                        <div class="star-rating" star-rating rating-value="list.rating" data-max="5" on-rating-selected="rateFunction(rating,list.listing)" readonly="readonly">
-                        </div>({{list.totalratings}} votes)
-                        <div class="alert" ng-class="alertmsg" role="alert" ng-if="ratingmsg!=''">
-                            {{ratingmsg}}
-                        </div>
+                            <div class="star-rating" star-rating rating-value="list.rating" data-max="5" on-rating-selected="rateFunction(rating,list.listing)" readonly="readonly">
+                            </div>({{list.totalratings}} votes)
+                            <div class="alert" ng-class="alertmsg" role="alert" ng-if="ratingmsg!=''">
+                                {{ratingmsg}}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <nav>
+        <ul class="pagination">
+            <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="allListings({page:page.pageno,limit:pagedata.limit,search:pagedata.search});">{{page.pageno}}</a>
+            </li>
+        </ul>
+    </nav>
 </section>
 
 
 <script>
     $(".panel-title").click(function () {
         console.log("im in");
+    });
+    $('#link').click(function () {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 600);
+        return false;
     });
 </script>

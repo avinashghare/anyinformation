@@ -2,24 +2,30 @@
     <!--header-middle-->
     <div class="container">
         <div class="row">
-           <div class="col-md-2 col-xs-12 logo text-center">
-                    <a href="#/home">
-                        <img ng-src="lib/images/home/logo2.png" style="height:45px;" alt="" />
-                    </a>
-                </div>
+            <div class="col-md-2 col-xs-12 logo text-center">
+                <a href="#/home">
+                    <img ng-src="lib/images/home/logo2.png" style="height:45px;" alt="" />
+                </a>
+            </div>
             <div class="col-md-7 col-xs-12 text-center">
-                
+
                 <div class="btn-group">
                     <form action="#" class="searchform" style="margin-top:10px;">
                         <select class="city onlycursor" ng-model="form.cityy" ng-change="citychange(form.cityy)">
                             <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
                         </select>
+                        <input type="text" name="area" ng-model="areaname" ng-change="searcharea(areaname,form.cityy)" placeholder="Search Area" style="width:290px;" />
+                        <div id="divsearcharea" class="searchdrop" ng-show="searchshowarea">
+                            <p ng-repeat="area in areas" ng-click="areachange(area.name,area.id)">{{area.name}}</p>
+                        </div>
+                        <!--
                         <select class="city onlycursor" ng-model="form.area" ng-change="areachange(form.area)">
                             <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="area in areas" value="{{area.id}}">{{area.name}}</option>
                             <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" value="">No area selected</option>
                         </select>
-                        
-                        <input type="text" name="abc" ng-model="search" ng-change="searchlist(search,form.cityy,form.area)" placeholder="Search..." style="width:290px;" />
+-->
+
+                        <input type="text" name="abc" ng-model="search" ng-change="searchlist(search,form.cityy,searchid)" placeholder="Search..." style="width:290px;" />
                         <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right" ng-click="innershearch()"></i>
                         </button>
 
