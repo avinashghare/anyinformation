@@ -75,6 +75,24 @@ width: 163px;
     border: 0;
     text-transform: capitalize;
     /* font-weight: bold; */
+    width: 100%
+}
+.citys {
+    padding: 5px;
+    color: #FFF;
+    font-size: 15px;
+    background: #049fb3;
+    -webkit-appearance: initial;
+    border: 0;
+    text-transform: capitalize;
+    /* font-weight: bold; */
+    width: 100%
+;
+    margin: 1px 0px 8px 0px;
+}
+input.cust {
+    margin: 0px 0 7px 0px;
+    padding: 7px 0px 4px 6px !important;
 }
 /* .city:hover{
     color: orange;

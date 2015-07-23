@@ -61,16 +61,33 @@
 
 
 
-            <div class="col-xs-6" ng-model="searchcat">
+            <div class="col-md-6" ng-model="searchcat">
                 <div class="searchslider">
                     <form class="searchform searchformtext">
+                        <div class="row">          
+                            <div class="col-md-6">
                         <select class="city onlycursor" ng-model="form.cityy" ng-change="citychange(form.cityy)">
                             <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
                         </select>
-                        <select class="city onlycursor" ng-model="form.area" ng-change="areachange(form.area)">
+                                </div>
+                              <div class="col-md-6">
+<!--
+                        <select class="city onlycursor" ng-model="form.cityy" ng-change="citychange(form.cityy)">
+                            <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
+                        </select>
+<
+-->
+                                  <input type="text"  placeholder="TextBox" class="cust">
+                                </div>
+                            </div>
+<div class="row">
+    <div class="col-md-10">
+                        <select class="citys onlycursor" ng-model="form.area" ng-change="areachange(form.area)">
                             <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="area in areas" value="{{area.id}}">{{area.name}}</option>
                             <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" value="">No area selected</option>
                         </select>
+        </div>
+    </div>
 <!--
                         <span class="city-search">
                 <i class="fa fa-map-marker fapadr"><span class="city-pad">{{area1}}</span>
