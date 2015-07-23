@@ -376,14 +376,14 @@ HAVING `enddateofbanner`=`fivedaysbefore`")->result();
     public function searchcategory($category,$city,$area,$lat,$long)
 	{
         $areawhere="";
-        if($area=="")
-        {
-            $areawhere="";
-        }
-        else
-        {
-            $areawhere=" AND `location`.`id`= '$area' ";
-        }
+//        if($area=="")
+//        {
+//            $areawhere="";
+//        }
+//        else
+//        {
+//            $areawhere=" AND `location`.`id`= '$area' ";
+//        }
 		$query['category']=$this->db->query("SELECT `category`.`id`,'1' AS `catorlist`,`category`.`name` FROM `category` WHERE `category`.`name` LIKE '%$category%'
         LIMIT 0 , 10")->result();
 		$query['listing']=$this->db->query("SELECT '2' AS `catorlist`,`listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`,ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) 
@@ -414,7 +414,7 @@ ORDER BY `dist` ASC
 //        {
 //            $areawhere=" AND `location`.`id`= '$area' ";
 //        }
-		$query=$this->db->query("SELECT `location`. `id`,`location`. `cityid`,`location`. `name`,`location`. `pincode` 
+		$query=$this->db->query("SELECT `location`. `id`,`location`. `cityid`,`location`. `name`,`location`. `pincode`,`location`. `lat`,`location`. `long` 
 FROM `location` 
 WHERE `location`. `name` LIKE '%$area%' AND `location`. `cityid`='$city'
         LIMIT 0 , 10")->result();

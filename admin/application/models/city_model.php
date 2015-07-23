@@ -297,6 +297,18 @@ WHERE `city`. `name` LIKE '%$city%'
 	}
     
     
+        function getlocationforlatlong()
+        { 
+            $query=$this->db->query("SELECT`location`. `id`,`location`. `cityid`,`location`. `name`,`location`. `pincode`,`location`. `lat`,`location`. `long` ,`city`.`name` AS `cityname`
+FROM `location` LEFT OUTER JOIN `city` ON `city`.`id`=`location`.`cityid` 
+WHERE `location`.`lat`=0 AND `location`.`long` =0 LIMIT 0,100")->result(); 
+//            print_r($query);
+            if($query)
+                return $query;
+            else
+                return 0;
+        }
+    
     //-----------------Changes made avinash
     
     

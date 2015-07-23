@@ -589,17 +589,18 @@ WHERE `listingcategory`.`category`='$id' ";
             {
                 $cityid=$cityquery->id;
             }
-            $area=$row['area'];
-            $areaquery=$this->db->query("SELECT * FROM `location` WHERE `cityid`='$cityid' AND `name` LIKE '$area'")->row();
-            if(empty($areaquery))
-            {
-                $this->db->query("INSERT INTO `location`(`name`,`cityid`) VALUES ('$area','$cityid')");
-                $areaid=$this->db->insert_id();
-            }
-            else
-            {
-                $areaid=$areaquery->id;
-            }
+//            $area=$row['area'];
+//            $areaquery=$this->db->query("SELECT * FROM `location` WHERE `cityid`='$cityid' AND `name` LIKE '$area'")->row();
+//            if(empty($areaquery))
+//            {
+//                $this->db->query("INSERT INTO `location`(`name`,`cityid`) VALUES ('$area','$cityid')");
+//                $areaid=$this->db->insert_id();
+//            }
+//            else
+//            {
+//                $areaid=$areaquery->id;
+//            }
+            $areaid=0;
             $data  = array(
                 'name' => $row['name'],
                 'user' => 1,
@@ -769,11 +770,16 @@ HAVING `pointerenddate`>`today` ORDER BY `id` DESC")->result();
     
         function getlistingdetailsforlatlong()
         { 
-            $query=$this->db->query("SELECT `listing`.`id`,`listing`. `name`,`listing`. `user`,`listing`. `address`,`listing`. `city`,`listing`. `pincode`,`listing`. `state`,`listing`. `country`,`listing`. `description`,`listing`. `logo`,`listing`. `contactno`,`listing`. `mobile`,`listing`. `email`,`listing`. `website`,`listing`. `facebook`,`listing`. `twitter`,`listing`. `googleplus`,`listing`. `yearofestablishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `credits`,`listing`. `isverified`,`listing`. `video`,`listing`. `deletestatus`,`listing`. `pointer`,`listing`. `area`,`listing`. `status`,`listing`. `pointerstartdate`,`listing`. `pointerenddate` ,`location`.`name` AS `areaname`,`city`.`name` AS `cityname`
+            $query=$this->db->query("SELECT `listing`.`id`,`listing`. `name`,`listing`. `user`,`listing`. `address`,`listing`. `city`,`listing`. `pincode`,`listing`. `state`,`listing`. `country`,`listing`. `description`,`listing`. `logo`,`listing`. `contactno`,`listing`. `mobile`,`listing`. `email`,`listing`. `website`,`listing`. `facebook`,`listing`. `twitter`,`listing`. `googleplus`,`listing`. `yearofestablishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `credits`,`listing`. `isverified`,`listing`. `video`,`listing`. `deletestatus`,`listing`. `pointer`,`listing`. `area`,`listing`. `status`,`listing`. `pointerstartdate`,`listing`. `pointerenddate` ,`city`.`name` AS `cityname`
 FROM `listing` 
-LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`
 LEFT OUTER JOIN `city` ON `city`.`id`=`listing`.`city`
-WHERE ISNULL(`listing`. `lat`) OR ISNULL(`listing`.`long`) LIMIT 0,100")->result(); 
+WHERE ISNULL(`listing`. `lat`) OR ISNULL(`listing`.`long`) LIMIT 0,5")->result(); 
+            
+//            $query=$this->db->query("SELECT `listing`.`id`,`listing`. `name`,`listing`. `user`,`listing`. `address`,`listing`. `city`,`listing`. `pincode`,`listing`. `state`,`listing`. `country`,`listing`. `description`,`listing`. `logo`,`listing`. `contactno`,`listing`. `mobile`,`listing`. `email`,`listing`. `website`,`listing`. `facebook`,`listing`. `twitter`,`listing`. `googleplus`,`listing`. `yearofestablishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `credits`,`listing`. `isverified`,`listing`. `video`,`listing`. `deletestatus`,`listing`. `pointer`,`listing`. `area`,`listing`. `status`,`listing`. `pointerstartdate`,`listing`. `pointerenddate` ,`location`.`name` AS `areaname`,`city`.`name` AS `cityname`
+//FROM `listing` 
+//LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`
+//LEFT OUTER JOIN `city` ON `city`.`id`=`listing`.`city`
+//WHERE ISNULL(`listing`. `lat`) OR ISNULL(`listing`.`long`) LIMIT 0,100")->result(); 
 //            print_r($query);
             if($query)
                 return $query;

@@ -454,7 +454,7 @@ class Json extends CI_Controller
 //        print_r($getdetailsoflisting);
         if(empty($getdetailsoflisting))
         {
-            echo "inif";
+//            echo "inif";
 //            $data['message']=0;
 //            $this->load->view('json',$data);
         }
@@ -466,16 +466,16 @@ class Json extends CI_Controller
                 $id=$value->id;
                 $address=$value->address;
                 $cityname=$value->cityname;
-                $areaname=$value->areaname;
-                if($areaname==null || $areaname=="")
-                {
-                    $areaname=$value->area;
-                }
+//                $areaname=$value->areaname;
+//                if($areaname==null || $areaname=="")
+//                {
+//                    $areaname=$value->area;
+//                }
                 $pincode=$value->pincode;
                 $state=$value->state;
                 $country=$value->country;
                 $region="IND";
-                $lastaddress=$address." ".$areaname." ".$cityname;
+                $lastaddress=$address." ".$cityname." ".$state;
     //            echo $lastaddress;
                 $lastaddress=urlencode($lastaddress);
                 $url = "https://maps.google.com/maps/api/geocode/json?address=$lastaddress&sensor=false&region=$region";
@@ -523,6 +523,8 @@ class Json extends CI_Controller
 	{
         
         $id=$this->input->get_post('id');
+        $lat=$this->input->get_post('lat');
+        $long=$this->input->get_post('long');
         
 //        $q="SELECT `listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`, `listing`. `user`, `listing`.`lat`, `listing`.`long`, `listing`.`address`, `listing`.`city`, `listing`.`pincode`, `listing`.`state`, `listing`.`country`, `listing`.`description`, `listing`.`logo`, `listing`.`contactno`, `listing`.`email`, `listing`.`website`, `listing`.`facebook`, `listing`.`twitter`, `listing`.`googleplus`, `listing`.`yearofestablishment`, `listing`.`timeofoperation_start`, `listing`.`timeofoperation_end`, `listing`.`type`, `listing`.`credits`, `listing`.`isverified`, `listing`.`area`, `listing`.`video`,`category`.`banner`,`category`.`name` AS `categoryname`,`listing`.`deletestatus` ,`listings`.`totalratings`,`listings`.`rating`
 //FROM `listingcategory`
@@ -736,6 +738,12 @@ class Json extends CI_Controller
         $elements[33]->header="rating";
         $elements[33]->alias="rating";
         
+        $elements[33]=new stdClass();
+        $elements[33]->field="ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) * cos( radians(`listing`.`long`) - radians($long)) + sin(radians($lat)) * sin( radians(`listing`. `lat`)))),2)";
+        $elements[33]->sort="1";
+        $elements[33]->header="dist";
+        $elements[33]->alias="dist";
+        
         $search=$this->input->get_post("search");
         $pageno=$this->input->get_post("pageno");
         $orderby=$this->input->get_post("orderby");
@@ -743,12 +751,12 @@ class Json extends CI_Controller
         $maxrow=$this->input->get_post("maxrow");
         if($maxrow=="")
         {
-            $maxrow=20;
+            $maxrow=10;
         }
         
         if($orderby=="")
         {
-            $orderby="id";
+            $orderby="dist";
             $orderorder="ASC";
         }
        
@@ -1313,6 +1321,74 @@ class Json extends CI_Controller
         
 		$this->load->view("json",$data);
 	} 
+    
+    
+    public function addlatlongforlocation()
+    {
+        $getdetailsoflocation=$this->city_model->getlocationforlatlong();
+//        print_r($getdetailsoflisting);
+        if(empty($getdetailsoflocation))
+        {
+            echo "inif";
+//            $data['message']=0;
+//            $this->load->view('json',$data);
+        }
+        else
+        {
+//            print_r($getdetailsoflisting);
+            foreach($getdetailsoflocation as $value)
+            {
+                $id=$value->id;
+                $pincode=$value->pincode;
+                $cityname=$value->cityname;
+                $name=$value->name;
+                $lat=$value->lat;
+                $long=$value->long;
+//                if($areaname==null || $areaname=="")
+//                {
+//                    $areaname=$value->area;
+//                }
+//                $pincode=$value->pincode;
+//                $state=$value->state;
+                $country="Maharashtra";
+                $region="IND";
+                $lastaddress=$name." ".$cityname." ".$country." ".$pincode;
+    //            echo $lastaddress;
+                $lastaddress=urlencode($lastaddress);
+                
+                $url = "https://maps.google.com/maps/api/geocode/json?address=$lastaddress&sensor=false&region=$region";
+         //       echo $url;
+                $response = file_get_contents($url);
+                $response = json_decode($response);
+              //  print_r($response);
+//                echo $lat;
+//                echo "<br>".$long;
+                if($response)
+                {
+                  //  echo "in result";
+                    $lat = $response->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+                    $long = $response->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+                   // echo $lat;
+                    if($lat>0 && $long>0)
+                    {
+
+                        $updatequery=$this->db->query("UPDATE `location` SET `lat`='$lat',`long`='$long' WHERE `id`='$id'");
+                    }
+                    else
+                    {
+                    echo "in else".$id;
+                    $updatequery=$this->db->query("UPDATE `location` SET `lat`='18.9750',`long`='72.8258' WHERE `id`='$id'");
+                    }
+                }
+                else
+                {
+                    $updatequery=$this->db->query("UPDATE `location` SET `lat`='18.9750',`long`='72.8258' WHERE `id`='$id'");
+                }
+            }
+        }
+        
+    }
+    
     
 }
 ?>
