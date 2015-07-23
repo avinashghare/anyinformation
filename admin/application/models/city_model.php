@@ -285,6 +285,18 @@ class City_model extends CI_Model
 			return  1;
 	}
     
+    
+    public function searchcity($city)
+	{
+		$query=$this->db->query("SELECT `city`. `id`,`city`. `name` 
+FROM `city` 
+WHERE `city`. `name` LIKE '%$city%'
+        LIMIT 0 , 10")->result();
+		
+		return $query;
+	}
+    
+    
     //-----------------Changes made avinash
     
     

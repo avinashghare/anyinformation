@@ -384,7 +384,9 @@ HAVING `enddateofbanner`=`fivedaysbefore`")->result();
         {
             $areawhere=" AND `location`.`id`= '$area' ";
         }
-		$query=$this->db->query("SELECT `listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`,ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) 
+		$query['category']=$this->db->query("SELECT `category`.`id`,'1' AS `catorlist`,`category`.`name` FROM `category` WHERE `category`.`name` LIKE '%$category%'
+        LIMIT 0 , 10")->result();
+		$query['listing']=$this->db->query("SELECT '2' AS `catorlist`,`listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`,ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) 
    * cos( radians(`listing`.`long`) - radians($long)) + sin(radians($lat)) 
    * sin( radians(`listing`. `lat`)))),2)
           AS `dist`, `listing`. `user`, `listing`.`lat`, `listing`.`long`, `listing`.`address`, `listing`.`area`, `listing`.`city`, `listing`.`pincode`, `listing`.`state`, `listing`.`country`, `listing`.`description`, `listing`.`logo`, `listing`.`contactno`, `listing`.`email`, `listing`.`website`, `listing`.`facebook`, `listing`.`twitter`, `listing`.`googleplus`, `listing`.`yearofestablishment`, `listing`.`timeofoperation_start`, `listing`.`timeofoperation_end`, `listing`.`type`, `listing`.`credits`, `listing`.`isverified`, `listing`.`video` ,`city`.`name` AS `cityname`,`category`.`name` AS `categoryname`,`category`.`banner` AS `banner`,`listing`.`deletestatus`,`location`.`name` AS `areaname`,CONCAT(`category`.`name`,`listing`.`name`) AS `fullname` 
