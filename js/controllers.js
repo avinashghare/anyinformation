@@ -4,6 +4,7 @@ var city = '';
 var area = '';
 var pat = '\home';
 var cityis = {};
+var geoposition = {};
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'restservice', 'ngRoute', 'angularFileUpload', 'ngTagsInput', 'ngDialog', 'google-maps', 'toaster', 'geolocation']);
 
 window.uploadUrl = 'upload.php';
@@ -24,8 +25,10 @@ phonecatControllers.controller('home',
         $scope.form = [];
         $scope.city = '';
         $scope.changepasswordvisible = true;
+        $scope.showmorecat = true;
+        $scope.applyclass = "loadmore";
+        $scope.areaname = {};
         //        $scope.changepasswordvisible = "false";
-
         var callback = function () {
             console.log("");
             $scope.juser = RestService.getjuser();
@@ -63,6 +66,15 @@ phonecatControllers.controller('home',
             toaster.pop('success', "title", "<button>ok</button>", null, 'trustedHtml');
 
         };
+
+        $scope.changeshowclass = function () {
+            $scope.showmorecat = !$scope.showmorecat;
+            if ($scope.showmorecat == true) {
+                $scope.applyclass = "loadmore";
+            } else {
+                $scope.applyclass = "loadmore showmore";
+            }
+        }
 
         //        authentication user
 
@@ -123,6 +135,7 @@ phonecatControllers.controller('home',
         function showPosition2(position) {
             var latlon = position.coords.latitude + "," + position.coords.longitude;
             console.log(position);
+            geoposition = position;
             //$scope.coords = position.coords;
             lat = position.coords.latitude;
             long = position.coords.longitude;
@@ -143,9 +156,9 @@ phonecatControllers.controller('home',
                         //                        cityis.selected = data[i].long_name;
                         area = data[i].long_name;
                         $scope.area1 = data[i].long_name;
-                        $scope.form.area = data[i].long_name;
-                        console.log($scope.form.area);
-
+                        $scope.areaname.name = data[i].long_name;
+                        $scope.$apply();
+                        console.log($scope.areaname);
                     }
                 }
                 var citywegot = 9;
@@ -197,12 +210,13 @@ phonecatControllers.controller('home',
             //            RestService.viewonecitylocations(city).success(getlocation);
         };
 
-        $scope.areachange = function (area, areaid) {
+        $scope.areachange = function (area) {
             console.log("area clicked ");
             console.log(area);
-            $("input[name=area]").val(area);
-            $scope.searchid = areaid;
+            $("input[name=area]").val(area.name);
             $scope.searchshowarea = false;
+            lat = area.lat;
+            long = area.long;
         };
 
         $scope.totextbox = function (name, selected) {
@@ -269,7 +283,7 @@ phonecatControllers.controller('home',
             console.log(listings);
             var categories = data1.category;
             console.log(categories);
-            var data = listings.concat(categories);
+            var data = categories.concat(listings);
             console.log(data);
             if (data != "") {
                 $scope.searchdrop = data;
@@ -281,16 +295,18 @@ phonecatControllers.controller('home',
             for (var i = 0; i < data.length; i++) {
                 if (data[i].catorlist == "2") {
                     if (data[i].dist != null && data[i].dist != '') {
-                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) " + data[i].dist + " KM ";
+                        //                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) " + data[i].dist + " KM ";
+                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " " + data[i].dist + " KM ";
                     } else {
-                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) ";
+                        //                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) ";
+                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name;
                     }
                 } else if (data[i].catorlist == "1") {
-                    $scope.searchdrop[i].search = data[i].name;
+                    $scope.searchdrop[i].search = data[i].name + " (+)";
                 }
             }
         };
-        $scope.searchlist = function (text, city, area) {
+        $scope.searchlist = function (text, city) {
             //            if (!city)
             //                city = 0;
             console.log(text + "--" + city + "--" + area);
@@ -306,8 +322,8 @@ phonecatControllers.controller('home',
             //                $scope.areatosend = text[1];
             //            }
             //
-            if (text != "" && city != null && area != null && city != "" && area != "") {
-                RestService.searchcategory(text, city, area, lat, long).success(searchsuccess);
+            if (text != "" && city != null && city != "") {
+                RestService.searchcategory(text, city, lat, long).success(searchsuccess);
             } else {
                 $scope.searchshow = false;
             }
@@ -328,7 +344,9 @@ phonecatControllers.controller('home',
         //                    console.log(data);
         //        };
         //        RestService.searchcategory("h").success(searchdata);
-
+        $scope.getuserscurrrentlocation = function () {
+            navigator.geolocation.getCurrentPosition(showPosition2, showError);
+        }
 
 
         // location lat long
@@ -1244,11 +1262,17 @@ phonecatControllers.controller('OtherCtrl',
         }
 
         $scope.areachange = function (area, areaid) {
+            //            console.log("area clicked ");
+            //            console.log(area);
+            //            $("input[name=area]").val(area);
+            //            $scope.searchid = areaid;
+            //            $scope.searchshowarea = false;
             console.log("area clicked ");
             console.log(area);
-            $("input[name=area]").val(area);
-            $scope.searchid = areaid;
+            $("input[name=area]").val(area.name);
             $scope.searchshowarea = false;
+            lat = area.lat;
+            long = area.long;
         };
 
         var searchareasuccess = function (data, status) {
@@ -1388,10 +1412,18 @@ phonecatControllers.controller('OtherCtrl',
 
         // innersearch in drop click
 
-        $scope.totextbox = function (name, id) {
+        $scope.totextbox = function (name, selected) {
+            //            $("input[name=abc]").val(name);
+            //            $scope.searchid = id;
+            //            $scope.searchshow = false;
             $("input[name=abc]").val(name);
-            $scope.searchid = id;
             $scope.searchshow = false;
+            console.log(selected);
+            if (selected.catorlist == "1") {
+                $location.url("/category/" + selected.id);
+            } else if (selected.catorlist == "2") {
+                $location.url("/detail/" + selected.listingid);
+            }
         }
 
         // inner header search 
@@ -1450,6 +1482,9 @@ phonecatControllers.controller('OtherCtrl',
 
         }
 
+        $scope.getuserscurrrentlocation = function () {
+            navigator.geolocation.getCurrentPosition(showPosition2, showError);
+        }
 
 
         $scope.innershearch = function () {
@@ -1457,7 +1492,13 @@ phonecatControllers.controller('OtherCtrl',
             $location.url("/detail/" + $scope.searchid);
         };
 
-        var searchsuccess = function (data, status) {
+        var searchsuccess = function (data1, status) {
+            console.log(data1);
+            var listings = data1.listing;
+            console.log(listings);
+            var categories = data1.category;
+            console.log(categories);
+            var data = listings.concat(categories);
             console.log(data);
             if (data != "") {
                 $scope.searchdrop = data;
@@ -1467,54 +1508,23 @@ phonecatControllers.controller('OtherCtrl',
 
             }
             for (var i = 0; i < data.length; i++) {
-
-                if (data[i].dist != null && data[i].dist != '') {
-                    $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) " + data[i].dist + " KM ";
-                } else {
-                    $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) ";
+                if (data[i].catorlist == "2") {
+                    if (data[i].dist != null && data[i].dist != '') {
+                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) " + data[i].dist + " KM ";
+                    } else {
+                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) ";
+                    }
+                } else if (data[i].catorlist == "1") {
+                    $scope.searchdrop[i].search = data[i].name;
                 }
-
             }
         };
         $scope.searchlist = function (text, city, area) {
-            //            //            if (!city)
-            //            //                city = 0;
-            //
-            //            city = city;
-            //            // substr()
-            //            text = text.split(' in ');
-            //            $scope.searchtext = text[0];
-            //            if (!text[1]) {
-            //                $scope.area = $scope.area;
-            //                $scope.areatosend = area;
-            //            } else {
-            //                $scope.area = text[1];
-            //                $scope.areatosend = text[1];
-            //            }
-            //
-            //            if (text[0] != "") {
-            //                console.log($scope.areatosend);
-            //                RestService.searchcategory($scope.searchtext, city, $scope.areatosend, lat, long).success(searchsuccess);
-            //            } else {
-            //                $scope.searchshow = false;
-            //            }
-            //            if (!city)
-            //                city = 0;
+
             console.log(text + "--" + city + "--" + area);
-            //            city = city;
-            //            // substr()
-            //            text = text.split(' in ');
-            //            $scope.searchtext = text[0];
-            //            if (!text[1]) {
-            //                $scope.area = $scope.area;
-            //                $scope.areatosend = area;
-            //            } else {
-            //                $scope.area = text[1];
-            //                $scope.areatosend = text[1];
-            //            }
-            //
-            if (text != "" && city != null && area != null && city != "" && area != "") {
-                RestService.searchcategory(text, city, area, lat, long).success(searchsuccess);
+
+            if (text != "" && city != null && city != "") {
+                RestService.searchcategory(text, city, lat, long).success(searchsuccess);
             } else {
                 $scope.searchshow = false;
             }
@@ -1528,15 +1538,6 @@ phonecatControllers.controller('OtherCtrl',
             }
         };
         RestService.getallcity().success(getcity);
-
-
-
-
-
-
-
-
-
     });
 
 phonecatControllers.controller('listbusiness',

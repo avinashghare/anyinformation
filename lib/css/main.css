@@ -75,8 +75,10 @@ width: 163px;
     border: 0;
     text-transform: capitalize;
     /* font-weight: bold; */
+    
     width: 100%
 }
+
 .citys {
     padding: 5px;
     color: #FFF;
@@ -86,10 +88,11 @@ width: 163px;
     border: 0;
     text-transform: capitalize;
     /* font-weight: bold; */
-    width: 100%
-;
+    
+    width: 100%;
     margin: 1px 0px 8px 0px;
 }
+
 input.cust {
     margin: 0px 0 7px 0px;
     padding: 7px 0px 4px 6px !important;
@@ -2752,30 +2755,40 @@ ul.can-detials li span {
     font-weight: 500;
 }
 li.email-details {
-  text-transform: none!important;
+    text-transform: none!important;
 }
-.rating{
-  color: #a9a9a9;
-  margin: 0;
-  padding: 0;
+.rating {
+    color: #a9a9a9;
+    margin: 0;
+    padding: 0;
 }
-
 ul.rating {
-  display: inline-block;
+    display: inline-block;
 }
-
 .rating li {
-  list-style-type: none;
-  display: inline-block;
-  padding: 1px;
-  text-align: center;
-  font-weight: bold;
-  cursor: pointer;
+    list-style-type: none;
+    display: inline-block;
+    padding: 1px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
     font-size: 20px;
-    
 }
-
 .rating .filled {
-  color: #049fb3!important;
+    color: #049fb3!important;
 }
-
+.loadmore {
+    height: 275px;
+    overflow: hidden;
+    transition: height 2s;
+}
+.loadmore.showmore {
+    height: auto;
+}
+.buttons {
+    text-align: center;
+    padding-bottom: 20px;
+}
+.btn.ng-hide {
+    display: none !important;
+}

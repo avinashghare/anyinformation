@@ -78,9 +78,10 @@
 <
 -->
                                 <!--                                  <input type="text"  placeholder="Area" class="cust">-->
-                                <input type="text" name="area" placeholder="Search Area" ng-model="areaname" ng-change="searcharea(areaname,form.cityy)" autocomplete="off" />
+                                <input type="text" name="area" placeholder="Search Area" ng-model="areaname.name" ng-change="searcharea(areaname.name,form.cityy)" autocomplete="off" />
+                                <img src="img/apache_pb.gif" ng-click="getuserscurrrentlocation();">
                                 <div id="divsearcharea" class="searchdrop" ng-show="searchshowarea">
-                                    <p ng-repeat="sea in searchdrop | orderBy : 'name'" ng-click="areachange(sea.name,sea.id)">{{sea.name}}</p>
+                                    <p ng-repeat="sea in searchdrop | orderBy : 'name'" ng-click="areachange(sea);">{{sea.name}}</p>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +102,7 @@
                         </span>
 -->
 
-                        <input type="text" name="abc" placeholder="Search For Anything Anywhere" ng-model="search" ng-change="searchlist(search,form.cityy,searchid)" style="width: 90%;" autocomplete="off" />
+                        <input type="text" name="abc" placeholder="Search For Anything Anywhere" ng-model="search" ng-change="searchlist(search,form.cityy)" style="width: 90%;" autocomplete="off" />
                         <!-- <input type="hidden" name="searchid" ng-model="categoryid"> -->
                         {{categoryid}}
                         <button type="submit" id="sea" class="btn btn-default search"><i class="fa fa-arrow-circle-o-right" ng-click="innershearch()"></i>
