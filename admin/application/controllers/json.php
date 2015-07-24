@@ -1365,7 +1365,7 @@ class Json extends CI_Controller
 //                echo "<br>".$long;
                 if($response)
                 {
-                  //  echo "in result";
+                    echo "in result ".$id;
                     $lat = $response->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
                     $long = $response->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
                    // echo $lat;
