@@ -386,6 +386,8 @@ HAVING `enddateofbanner`=`fivedaysbefore`")->result();
 //        }
 		$query['category']=$this->db->query("SELECT `category`.`id`,'1' AS `catorlist`,`category`.`name` FROM `category` WHERE `category`.`name` LIKE '%$category%'
         LIMIT 0 , 10")->result();
+        $countquerycategory=count($query['category']);
+        $lastlimit=10-$countquerycategory;
 		$query['listing']=$this->db->query("SELECT '2' AS `catorlist`,`listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`,ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) 
    * cos( radians(`listing`.`long`) - radians($long)) + sin(radians($lat)) 
    * sin( radians(`listing`. `lat`)))),2)
@@ -398,7 +400,7 @@ LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`
 WHERE `city`.`id` = '$city' AND `listing`.`deletestatus`='1' AND `listing`.`status`=1 $areawhere
 HAVING `fullname` LIKE '%$category%'
 ORDER BY `dist` ASC
-        LIMIT 0 , 10")->result();
+        LIMIT 0 , $lastlimit")->result();
 		
 		return $query;
 	}
