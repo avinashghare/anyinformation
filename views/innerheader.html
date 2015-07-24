@@ -9,15 +9,24 @@
             </div>
             <div class="col-md-7 col-xs-12 text-center">
 
-                <div class="btn-group">
-                    <form action="#" class="searchform" style="margin-top:10px;">
-                        <select class="city onlycursor" ng-model="form.cityy" ng-change="citychange(form.cityy)">
-                            <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
-                        </select>
-                        <input type="text" name="area" ng-model="areaname" ng-change="searcharea(areaname,form.cityy)" placeholder="Search Area" style="width:290px;" />
-                        <div id="divsearcharea" class="searchdrop" ng-show="searchshowarea">
-                            <p ng-repeat="area in areas" ng-click="areachange(area)">{{area.name}}</p>
+                <div class="btn-group inner-search-box">
+                    <div class="searchform" style="margin-top:10px;">
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-md-6">
+                                <select class="city onlycursor" ng-model="form.cityy" ng-change="citychange(form.cityy)">
+                                    <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="area" ng-model="areaname.area" ng-change="searcharea(areaname.area,form.cityy)" placeholder="Search Area"  class="area-input" />
+                                <div id="divsearcharea" class="searchdrop" ng-show="searchshowarea">
+                                    <p ng-repeat="area in areas" ng-click="areachange(area)">{{area.name}}</p>
+                                </div>
+                            </div>
                         </div>
+
+
+
                         <!--
                         <select class="city onlycursor" ng-model="form.area" ng-change="areachange(form.area)">
                             <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="area in areas" value="{{area.id}}">{{area.name}}</option>
@@ -25,14 +34,14 @@
                         </select>
 -->
 
-                        <input type="text" name="abc" ng-model="search" ng-change="searchlist(search,form.cityy)" placeholder="Search..." style="width:290px;" />
+                        <input type="text" name="abc" class="searchbox" ng-model="search" ng-keypress="searchlist(search,form.cityy,$event)" placeholder="Search..."  />
                         <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right" ng-click="innershearch()"></i>
                         </button>
 
                         <div id="divsearch" class="searchdrop" ng-show="searchshow">
                             <p ng-repeat="sea in searchdrop" ng-click="totextbox(sea.search,sea)">{{sea.search}}</p>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-xs-12 text-center">

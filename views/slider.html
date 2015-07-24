@@ -15,9 +15,7 @@
 
 
 
-            <div class="col-xs-3">
-
-
+            <div class="col-md-3 slider-home">
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="2000">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
@@ -64,7 +62,7 @@
             <div class="col-md-6" ng-model="searchcat">
                 <div class="searchslider">
                     <form class="searchform searchformtext">
-                        <div class="row">
+                        <div class="row" style="margin-bottom:10px;">
                             <div class="col-md-6">
                                 <select class="city onlycursor" ng-model="form.cityy" ng-change="citychange(form.cityy)">
                                     <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
@@ -78,8 +76,12 @@
 <
 -->
                                 <!--                                  <input type="text"  placeholder="Area" class="cust">-->
-                                <input type="text" name="area" placeholder="Search Area" ng-model="areaname.name" ng-change="searcharea(areaname.name,form.cityy)" autocomplete="off" />
-                                <img src="img/apache_pb.gif" ng-click="getuserscurrrentlocation();">
+                                <input type="text" name="area" placeholder="Search Area" ng-model="areaname.name" ng-change="searcharea(areaname.name,form.cityy)" autocomplete="off" class="input-home area" />
+                                <span class="home-uselocation">
+                              
+                                <img src="img/apache_pb.gif" ng-click="getuserscurrrentlocation();" class="img-right">
+                                  <span class="hide-home">use my location</span>
+                                </span>
                                 <div id="divsearcharea" class="searchdrop" ng-show="searchshowarea">
                                     <p ng-repeat="sea in searchdrop | orderBy : 'name'" ng-click="areachange(sea);">{{sea.name}}</p>
                                 </div>
@@ -102,10 +104,10 @@
                         </span>
 -->
 
-                        <input type="text" name="abc" placeholder="Search For Anything Anywhere" ng-model="search" ng-change="searchlist(search,form.cityy)" style="width: 90%;" autocomplete="off" />
+                        <input type="text" name="abc" placeholder="Search For Anything Anywhere" ng-model="search" ng-keypress="searchlist(search,form.cityy,$event)" style="width: 90%;" autocomplete="off" />
                         <!-- <input type="hidden" name="searchid" ng-model="categoryid"> -->
                         {{categoryid}}
-                        <button type="submit" id="sea" class="btn btn-default search"><i class="fa fa-arrow-circle-o-right" ng-click="innershearch()"></i>
+                        <button type="submit" id="sea" class="btn btn-default search"><i class="fa fa-arrow-circle-o-right" ng-click="innershearch(search)"></i>
                         </button>
                         <!--
                 <div id="divsearch" class="searchdrop" ng-show="searchshow">
@@ -122,11 +124,7 @@
 
 
 
-            <div class="col-xs-3">
-
-
-
-
+            <div class="col-md-3 slider-home">
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="2000">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">

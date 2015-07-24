@@ -67,16 +67,16 @@ width: 163px;
 }
 
 .city {
-    padding: 5px;
+    padding: 6px;
     color: #FFF;
     font-size: 15px;
-    background: #049fb3;
     -webkit-appearance: initial;
     border: 0;
     text-transform: capitalize;
-    /* font-weight: bold; */
     
     width: 100%
+;border: 1px solid #DDDDDD;      color: #CCCCC6;
+    width: 100%;
 }
 
 .citys {
@@ -102,9 +102,6 @@ input.cust {
 } */
 
 .area {
-    position: absolute;
-    margin-left: -8%;
-    margin-top: -2% !important;
 }
 
 #login {
@@ -633,7 +630,7 @@ a#scrollUp i {
 .header-middle .container .row {
     /* border-bottom: 1px solid #f5f5f5; */
     
-    padding-bottom: 20px;
+    /* padding-bottom: 20px; */
     padding-top: 20px;
 }
 .header-middle .container .row .col-sm-4 {
@@ -743,6 +740,18 @@ a#scrollUp i {
     background-repeat: no-repeat;
     background-position: 130px;
 }
+
+.searchform input.searchbox {
+    width:calc(100% - 52px);
+}
+
+.searchform input.area {
+    width:calc(100% - 55px);
+}
+.searchform input.footerinput {
+    width:calc(100% - 55px);
+}
+
 /*  Dropdown menu*/
 
 .navbar-header .navbar-toggle .icon-bar {
@@ -952,7 +961,8 @@ ul.sub-menu {
     margin-top: 0;
     outline: medium none;
     padding: 7px;
-    width: 212px;
+    width: 100%;
+    margin-bottom: 0px;
 }
 .searchform button {
     background: #049fb3;
@@ -1439,10 +1449,18 @@ h2.title {
     width: 100%;
 }
 .pagination {
-    display: inline-block;
+    display: block;
     margin-bottom: 25px;
     margin-top: 0;
     padding-left: 15px;
+    overflow-x: scroll;
+    white-space: nowrap;
+    overflow-y: hidden;
+    width: 80%;
+    margin: 20px auto;
+}
+.pagination>li {
+    display: inline-block;
 }
 .pagination li:first-child a,
 .pagination li:first-child span {
@@ -1479,6 +1497,7 @@ h2.title {
     text-decoration: none;
     margin-right: 5px;
     color: #000;
+    margin-bottom: 5px;
 }
 .pagination li a:hover {
     background: #043eb3;
@@ -2783,7 +2802,7 @@ ul.rating {
     transition: height 2s;
 }
 .loadmore.showmore {
-    height: auto;
+    
 }
 .buttons {
     text-align: center;
@@ -2791,4 +2810,35 @@ ul.rating {
 }
 .btn.ng-hide {
     display: none !important;
+}
+span.hide-home {
+    position: absolute;
+    top: -25px;
+    width: 100%;
+    right: 0px;
+    text-align: right;
+    padding-right: 17px;
+    text-transform: capitalize;
+    color: #049FB3;
+    opacity: 0;
+}
+span.home-uselocation:hover span.hide-home {
+    opacity: 1;
+}
+img.img-right {
+    padding-left: 10px;
+}
+.btn-group.inner-search-box {
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+.btn-group.inner-search-box select {
+    /* width: 94%; */
+    /* margin-bottom: 10px; */
+}
+.mediaclass-head {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80%;
 }

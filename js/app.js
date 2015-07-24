@@ -1,6 +1,7 @@
 //var assetspath = "http://localhost/forany2/admin/assets/";
 //var assetspath = "http://www.foranyinformation.com/admin/assets/";
-var assetspath = "http://www.anyinformation.com/admin/assets/";
+//var assetspath = "http://www.anyinformation.com/admin/assets/";
+var assetspath = "http://localhost/anyinformation/admin/assets/";
 
 // JavaScript Document
 var firstapp = angular.module('firstapp', [
@@ -23,6 +24,10 @@ firstapp.config(['$routeProvider',
         when('/category/:id', {
             templateUrl: 'views/template.html',
             controller: 'category'
+        }).
+        when('/categorysearch/:id', {
+            templateUrl: 'views/template.html',
+            controller: 'categorysearch'
         }).
         when('/subcategory/:id', {
             templateUrl: 'views/template.html',
@@ -82,8 +87,8 @@ firstapp.filter('imagepath', function () {
 //            return "http://www.foranyinformation.com/admin/assets/img/NoImage.jpg";
         } else {
             //            return "http://mafiawarloots.com/foranyinformation/uploads/" + input;
-                        return "http://localhost/forany2/admin/uploads/" + input;
-//            return "http://www.foranyinformation.com/admin/uploads/" + input;
+//                        return "http://localhost/forany2/admin/uploads/" + input;
+            return "http://www.anyinformation.com/admin/uploads/" + input;
         }
     };
 });

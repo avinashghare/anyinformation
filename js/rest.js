@@ -202,6 +202,9 @@ var restservice = angular.module('restservice', [])
         },
         searcharea: function (text, city) {
             return $http.get(adminurl + "searcharea?cityid=" + city + "&area=" + text, {});
+        },
+        getlistingbycategorysearch: function (pagedata) {
+            return $http.get(adminurl + "getlistingbycategorysearch?text=" + pagedata.search + "&pageno=" + pagedata.page + "&maxrow=" + pagedata.limit + "&lat=" + lat + "&long=" + long, {});
         }
 
     }

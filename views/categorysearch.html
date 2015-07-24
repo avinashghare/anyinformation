@@ -1,17 +1,19 @@
 <section>
     <div id="link" class="container">
         <toaster-container></toaster-container>
+<!--
         <div class="banner">
             <img ng-src="{{banner.banner | imagepath3}}" ng-show="banner.banner==''" width="100%">
-            <!--            <img ng-src="{{'png/'+banner.banner | imagepath1}}" ng-show="banner.banner!=''" width="100%">  'ad/ad.jpg'-->
+                        <img ng-src="{{'png/'+banner.banner | imagepath1}}" ng-show="banner.banner!=''" width="100%">  'ad/ad.jpg'
         </div>
+-->
         <div class="row">
             <div class="col-sm-3">
                 <div class="cat-aside">
                     <div class="left-sidebar">
                         <div class="panel-group category-products" style="padding-left: 17px;" id="accordian">
                             <!--category-productsr-->
-                            <h4>{{filters[0].name}}</h4>
+<!--                            <h4>{{filters[0].name}}</h4>-->
                             <div class="panel panel-default" ng-repeat="filter in filters">
                                 <div class="panel-heading">
                                     <h4 class="panel-title"><a ng-click="filterselect(filter.iid,filter.name)" class="cursor" ng-class="filter.name"><i class="fa fa-caret-right"></i>  {{filter.name2}}</a></h4>

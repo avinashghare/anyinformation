@@ -67,14 +67,17 @@ phonecatControllers.controller('home',
 
         };
 
+
         $scope.changeshowclass = function () {
-            $scope.showmorecat = !$scope.showmorecat;
-            if ($scope.showmorecat == true) {
-                $scope.applyclass = "loadmore";
-            } else {
-                $scope.applyclass = "loadmore showmore";
-            }
+            $scope.showmorecat = false;
+            var newheight = $(".showmorereal").height();
+            $(".loadmore").height(newheight);
         }
+        $scope.changehideclass = function () {
+            $scope.showmorecat = true;
+            $(".loadmore").height("275px");
+        }
+
 
         //        authentication user
 
@@ -231,7 +234,7 @@ phonecatControllers.controller('home',
         }
 
         $scope.innershearch = function () {
-            RestService.recentvisit($scope.searchid);
+            //            RestService.recentvisit($scope.searchid);
             $location.url("/detail/" + $scope.searchid);
         };
 
@@ -306,9 +309,10 @@ phonecatControllers.controller('home',
                 }
             }
         };
-        $scope.searchlist = function (text, city) {
+        $scope.searchlist = function (text, city, $event) {
             //            if (!city)
             //                city = 0;
+            console.log($event.keyCode)
             console.log(text + "--" + city + "--" + area);
             //            city = city;
             //            // substr()
@@ -322,10 +326,14 @@ phonecatControllers.controller('home',
             //                $scope.areatosend = text[1];
             //            }
             //
-            if (text != "" && city != null && city != "") {
-                RestService.searchcategory(text, city, lat, long).success(searchsuccess);
+            if ($event.keyCode === 13) {
+                $location.url("/categorysearch/" + text);
             } else {
-                $scope.searchshow = false;
+                if (text != "" && city != null && city != "") {
+                    RestService.searchcategory(text, city, lat, long).success(searchsuccess);
+                } else {
+                    $scope.searchshow = false;
+                }
             }
         }
         var getcity = function (data, status) {
@@ -1230,7 +1238,7 @@ phonecatControllers.controller('OtherCtrl',
 
         $scope.area = "";
         $scope.form = [];
-
+        $scope.areaname = {};
         $scope.showhidediv = function () {
             if ($scope.profilepasword == "false")
                 $scope.profilepasword = "true";
@@ -1405,9 +1413,10 @@ phonecatControllers.controller('OtherCtrl',
 
         // on inner search go button
 
-        $scope.innershearch = function () {
-            RestService.recentvisit($scope.searchid);
-            $location.url("/detail/" + $scope.searchid);
+        $scope.innershearch = function (text) {
+            //            RestService.recentvisit($scope.searchid);
+            //            $location.url("/detail/" + $scope.searchid);
+            $location.url("/categorysearch/" + text);
         };
 
         // innersearch in drop click
@@ -1456,8 +1465,8 @@ phonecatControllers.controller('OtherCtrl',
                         //                        cityis.selected = data[i].long_name;
                         area = data[i].long_name;
                         $scope.area1 = data[i].long_name;
-                        $scope.form.area = data[i].long_name;
-                        console.log($scope.form.area);
+                        $scope.areaname.area = data[i].long_name;
+                        console.log($scope.areaname.area);
 
                     }
                 }
@@ -1519,14 +1528,19 @@ phonecatControllers.controller('OtherCtrl',
                 }
             }
         };
-        $scope.searchlist = function (text, city, area) {
+        $scope.searchlist = function (text, city, $event) {
 
             console.log(text + "--" + city + "--" + area);
 
-            if (text != "" && city != null && city != "") {
-                RestService.searchcategory(text, city, lat, long).success(searchsuccess);
+            if ($event.keyCode === 13) {
+                console.log("in if")
+                $location.url("/categorysearch/" + text);
             } else {
-                $scope.searchshow = false;
+                if (text != "" && city != null && city != "") {
+                    RestService.searchcategory(text, city, lat, long).success(searchsuccess);
+                } else {
+                    $scope.searchshow = false;
+                }
             }
         }
         var getcity = function (data, status) {
@@ -1997,6 +2011,293 @@ phonecatControllers.controller('MyCtrl',
             }
             return hasFile ? "dragover" : "dragover-err";
         };
+
+    });
+phonecatControllers.controller('categorysearch',
+    function ($scope, TemplateService, RestService, $location, $routeParams, ngDialog, toaster) {
+        $scope.template = TemplateService;
+        TemplateService.content = "views/categorysearch.html";
+        TemplateService.slider = false;
+        TemplateService.navigation = "views/innerheader.html";
+        $scope.demo = "hey hey hye";
+        $scope.msg = "";
+        $scope.msgarea = false;
+        $scope.listingid = '';
+        $scope.enquirymsg = '';
+        $scope.ratingmsg = '';
+        $scope.alertmsg = "alert-success";
+        $scope.pagedata = {};
+        $scope.pagedata.page = 1;
+        $scope.pagedata.limit = "10";
+        $scope.pagedata.search = $routeParams.id;
+        $scope.activepage = 1;
+        //        $scope.pages = [1,2,3];
+        //  LOGIN FROM CATEGORY START
+        $scope.login = [];
+
+        var loginsuccess = function (data, status) {
+            console.log("after login");
+            console.log(data);
+            if (data != "false") {
+                $scope.loginlogout = "Logout";
+                RestService.setjuser(data);
+                window.location.reload();
+            } else {
+                toaster.pop("error", "Login Error", "Invalid Username Or Password", 5000);
+            }
+
+        };
+
+        $scope.userlogin = function (login) {
+
+            //login validation
+            $scope.allvalidation1 = [{
+                field: $scope.login.email,
+                name: "Email",
+                validation: ""
+            }, {
+                field: $scope.login.password,
+                name: "Password",
+                validation: ""
+            }];
+
+            var check = formvalidation($scope.allvalidation1);
+
+            if (check == '') {
+
+                RestService.login(login.email, login.password).success(loginsuccess);
+
+            } else {
+                console.log("not ckeck");
+                toaster.pop('error', "Login", "Enter Proper " + check, 5000);
+            }
+        }
+
+        //  LOGIN FROM CATEGORY END
+
+
+        $scope.rating = 2;
+        var ratingsuccess = function (data, status) {
+            console.log(data);
+            if (data == "1") {
+                toaster.pop('success', "Rating", "Rated successfuly", 5000);
+                //                $scope.ratingmsg = "Rated Successfully";
+                //                $scope.alertmsg = "alert-success";
+            } else {
+                toaster.pop('error', "Rating", "Try later", 5000);
+                //                $scope.ratingmsg = "Try later";
+                //                $scope.alertmsg = "alert-danger";
+            }
+        }
+        $scope.rateFunction = function (rating, listing) {
+
+            if ($scope.user == 0) {
+                ngDialog.open({
+                    template: 'views/loginpup.html',
+                    controller: 'category'
+                });
+            } else {
+                RestService.addrating(rating, listing).success(ratingsuccess);
+            }
+
+            //          alert('Rating selected - ' + rating);
+        };
+
+
+        $scope.onemailclick = function (listing) {
+            console.log(listing);
+            $.jStorage.set("listingid", listing);
+            ngDialog.open({
+                template: 'views/emailclick.html',
+                controller: 'category'
+            });
+        };
+
+        $scope.loginpop = function () {
+            ngDialog.open({
+                template: 'views/loginpup.html',
+                controller: 'category'
+            });
+        }
+
+        //    enquiry for listing
+        $scope.enquiry = [];
+        var enquirysuccess = function (data, status) {
+            console.log(data);
+            $scope.allvalidation = [];
+            if (data == "1") {
+                //                $scope.enquiryshow = true;
+                //                $scope.enquirymsg = "Enquiry Send successfuly";
+                toaster.pop('success', "Enquiry", "Enquiry Send successfuly", 5000);
+
+            } else {
+                //                $scope.enquiryshow = true;
+                //                $scope.enquirymsg = "Sorry, Try again later";
+                toaster.pop('error', "Enquiry", "Sorry, Try again later", 5000);
+            }
+        };
+        $scope.enquiryuser = function (enquiry) {
+            console.log(enquiry);
+
+            $scope.allvalidation = [{
+                field: $scope.enquiry.name,
+                name: "Name",
+                validation: ""
+            }, {
+                field: $scope.enquiry.email,
+                name: "Email",
+                validation: ""
+            }, {
+                field: $scope.enquiry.phone,
+                name: "Phone Number",
+                validation: ""
+            }, {
+                field: $scope.enquiry.comment,
+                name: "Comment",
+                validation: ""
+            }];
+
+            var check = formvalidation($scope.allvalidation);
+
+            if (check == '') {
+                ngDialog.close();
+                console.log($scope.listingid);
+                RestService.enquiryuser(enquiry.name, enquiry.email, enquiry.phone, enquiry.comment).success(enquirysuccess);
+            } else {
+                console.log("not ckeck");
+                toaster.pop('error', "Enquiry", "Enter Proper " + check, 5000);
+            }
+
+
+        }
+
+        //        var categoryinfosuccess = function (data, status) {
+        //            console.log(data);
+        //            $scope.banner = data;
+        //            RestService.setbanner(data.banner);
+        //        };
+        //        RestService.getcategoryinfo($routeParams.id).success(categoryinfosuccess);
+
+        //    start authen
+        $scope.linkclick = function (id) {
+            RestService.recentvisit(id);
+            $location.url('/detail/' + id);
+        }
+
+        //special offers by category id
+
+        //        var getoffers = function (data, status) {
+        //
+        //            console.log("offers");
+        //            console.log(data);
+        //            $scope.offers = data;
+        //
+        //        };
+        //        RestService.getspecialoffersbycategory($routeParams.id).success(getoffers);
+
+
+        //listiung by category id
+
+        var getlisting = function (data, status) {
+            console.log(data);
+            if (data.queryresult.length == 0) {
+                $scope.msg = "No Listing";
+                $scope.msgarea = true;
+            } else {
+                $scope.msgarea = false;
+                $scope.listings = data.queryresult;
+                console.log("listing listing********************");
+                console.log($scope.listings);
+                for (var i = 0; i < $scope.listings.length; i++) {
+                    if (!$scope.listings[i].rating) {
+                        $scope.listings[i].rating = 1;
+                    }
+                }
+                $scope.pages = [];
+                var newclass = "";
+                for (var i = 1; i <= data.lastpage; i++) {
+                    if ($scope.activepage == i) {
+                        newclass = "active";
+                    } else {
+                        newclass = "";
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
+                }
+            }
+        };
+        $scope.allListings = function (pagedata) {
+            console.log(pagedata);
+            $scope.activepage = pagedata.page;
+            RestService.getlistingbycategorysearch(pagedata).success(getlisting);
+        }
+
+        $scope.allListings($scope.pagedata);
+
+        //filter
+        var getfilter = function (data, status) {
+            console.log(data);
+            $scope.filters = data;
+        };
+        RestService.getfilter(1).success(getfilter);
+
+        //filter to category listing
+        $scope.one1 = "";
+        $scope.filterselect = function (iid, name) {
+            $scope.one1 = name;
+            $scope.one1 = "filterselected";
+            $scope.listings = "";
+            $location.url("/subcategory/" + iid);
+            //            RestService.getlistingbycategory(iid).success(getlisting);
+        }
+
+        //        start authenticating user
+
+
+        $scope.juser = RestService.getjuser();
+        if ($scope.juser == null) {
+            $scope.user = 0;
+
+        } else {
+            $scope.user = $scope.juser.id;
+        }
+
+        //        var getuser = function (data, status) {
+        //                    console.log("my data");
+        //                    console.log(data);
+        //            if (data == "false") {
+        //                $scope.user = 0;
+        //            } else {
+        //                $scope.user = data;
+        //            }
+        //        };
+        //        RestService.authenticate().success(getuser);
+
+        //        end authenticating user
+
+        //        start send email to user
+
+        var sendsuccess = function (data, status) {
+            console.log(data);
+            toaster.pop('success', "Email", "Email Send successfuly", 5000);
+        };
+        $scope.sendemail = function (listing) {
+            console.log("listing");
+            console.log(listing);
+            console.log("user");
+            console.log($scope.user);
+            pat = $location.url();
+            if ($scope.user == 0) {
+                $location.url('/login');
+            } else {
+                RestService.sendemail($scope.user, listing).success(sendsuccess);
+            }
+
+        }
+
+        //        end send email to user
 
     });
 

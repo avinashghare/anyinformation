@@ -2,22 +2,24 @@
     <div class="container">
         <div>
             <div class="{{applyclass}}">
-                <div class="row" ng-repeat="categories in homecategory">
-                    <div class="col-sm-2" ng-repeat="category in categories">
-                        <div class="product-image-wrapper homecat">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <a ng-click="oncategoryclick(category.id)" ng-if="category.status==0" class="homecat">
-                                        <div><i class="{{category.logo}}"></i>
-                                        </div>
-                                        <p>{{category.name}}</p>
-                                    </a>
-                                    <a ng-click="oncategoryclick(category.id)" ng-if="category.status==1" class="homecat">
-                                        <div>
-                                            <img ng-src="{{'png/'+category.logo|imagepath1}}" class="fa-3x" />
-                                        </div>
-                                        <p>{{category.name}}</p>
-                                    </a>
+                <div class="showmorereal">
+                    <div class="row" ng-repeat="categories in homecategory">
+                        <div class="col-xs-6 col-sm-4 col-md-2" ng-repeat="category in categories">
+                            <div class="product-image-wrapper homecat">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <a ng-click="oncategoryclick(category.id)" ng-if="category.status==0" class="homecat">
+                                            <div><i class="{{category.logo}}"></i>
+                                            </div>
+                                            <p>{{category.name}}</p>
+                                        </a>
+                                        <a ng-click="oncategoryclick(category.id)" ng-if="category.status==1" class="homecat">
+                                            <div>
+                                                <img ng-src="{{'png/'+category.logo|imagepath1}}" class="fa-3x" />
+                                            </div>
+                                            <p>{{category.name}}</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +29,7 @@
         </div>
         <div class="buttons">
             <a class="btn btn-primary mrr" ng-click="changeshowclass();" ng-show="showmorecat">Show More</a>
-            <a class="btn btn-primary mrr" ng-click="changeshowclass();" ng-hide="showmorecat">Hide</a>
+            <a class="btn btn-primary mrr" ng-click="changehideclass();" ng-hide="showmorecat">Hide</a>
         </div>
 
         <!--
