@@ -527,5 +527,11 @@ HAVING `enddateofbanner`>`today`")->result();
 		return $query;
         }
     
+    
+    public function getcategorynamebyid($id)
+	{
+		$query=$this->db->query("SELECT `name` FROM `category` WHERE `id`='$id'")->row();
+		return $query;
+	}
 }
 ?>

@@ -1646,6 +1646,11 @@ class Json extends CI_Controller
         
     }
     
-    
+    public function getcategorynamebyid()
+    {
+        $id=$this->input->get_post('id');
+        $data['message']=$this->category_model->getcategorynamebyid($id);
+		$this->load->view('json',$data);
+    }
 }
 ?>
