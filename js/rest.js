@@ -205,7 +205,9 @@ var restservice = angular.module('restservice', [])
         },
         getlistingbycategorysearch: function (pagedata) {
             return $http.get(adminurl + "getlistingbycategorysearch?text=" + pagedata.search + "&pageno=" + pagedata.page + "&maxrow=" + pagedata.limit + "&lat=" + lat + "&long=" + long, {});
+        },
+        getcategorynamebyid: function (catid) {
+            return $http.get(adminurl + "getcategorynamebyid?id=" + catid, {});
         }
-
     }
 });

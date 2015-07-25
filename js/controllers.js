@@ -5,6 +5,7 @@ var area = '';
 var pat = '\home';
 var cityis = {};
 var geoposition = {};
+var searchquery = "";
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'restservice', 'ngRoute', 'angularFileUpload', 'ngTagsInput', 'ngDialog', 'google-maps', 'toaster', 'geolocation']);
 
 window.uploadUrl = 'upload.php';
@@ -312,6 +313,7 @@ phonecatControllers.controller('home',
         $scope.searchlist = function (text, city, $event) {
             //            if (!city)
             //                city = 0;
+            searchquery = text;
             console.log($event.keyCode)
             console.log(text + "--" + city + "--" + area);
             //            city = city;
@@ -421,6 +423,7 @@ phonecatControllers.controller('category',
         //        $scope.pages = [1,2,3];
         //  LOGIN FROM CATEGORY START
         $scope.login = [];
+        $scope.searchq = {};
 
         var loginsuccess = function (data, status) {
             console.log("after login");
@@ -434,6 +437,12 @@ phonecatControllers.controller('category',
             }
 
         };
+
+        var categorynamesuccess = function (data, status) {
+            console.log(data);
+            $scope.searchq.search = data.name;
+        }
+        RestService.getcategorynamebyid($routeParams.id).success(categorynamesuccess);
 
         $scope.userlogin = function (login) {
 
@@ -587,6 +596,8 @@ phonecatControllers.controller('category',
 
         var getlisting = function (data, status) {
             console.log(data);
+            //            console.log(data.queryresult[0]);
+            //            console.log(data.queryresult[0].categoryname);
             if (data.queryresult.length == 0) {
                 $scope.msg = "No Listing";
                 $scope.msgarea = true;
@@ -1235,6 +1246,7 @@ phonecatControllers.controller('OtherCtrl',
         $scope.profilepasword = "false";
         $scope.changepasswordvisible = "false";
         $scope.searchshowarea = false;
+        $scope.search = searchquery;
 
         $scope.area = "";
         $scope.form = [];
@@ -1519,19 +1531,21 @@ phonecatControllers.controller('OtherCtrl',
             for (var i = 0; i < data.length; i++) {
                 if (data[i].catorlist == "2") {
                     if (data[i].dist != null && data[i].dist != '') {
-                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) " + data[i].dist + " KM ";
+                        //                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) " + data[i].dist + " KM ";
+                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " " + data[i].dist + " KM ";
                     } else {
-                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) ";
+                        //                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name + " ( " + data[i].area + " ) ";
+                        $scope.searchdrop[i].search = data[i].categoryname + " " + data[i].name;
                     }
                 } else if (data[i].catorlist == "1") {
-                    $scope.searchdrop[i].search = data[i].name;
+                    $scope.searchdrop[i].search = data[i].name + " (+)";
                 }
             }
         };
         $scope.searchlist = function (text, city, $event) {
 
             console.log(text + "--" + city + "--" + area);
-
+            searchquery = text;
             if ($event.keyCode === 13) {
                 console.log("in if")
                 $location.url("/categorysearch/" + text);
@@ -2034,6 +2048,8 @@ phonecatControllers.controller('categorysearch',
         //        $scope.pages = [1,2,3];
         //  LOGIN FROM CATEGORY START
         $scope.login = [];
+        $scope.searchq = {};
+        $scope.searchq.search = searchquery;
 
         var loginsuccess = function (data, status) {
             console.log("after login");
