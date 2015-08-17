@@ -6,6 +6,7 @@ var pat = '\home';
 var cityis = {};
 var geoposition = {};
 var searchquery = "";
+var selectedarea = '';
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'restservice', 'ngRoute', 'angularFileUpload', 'ngTagsInput', 'ngDialog', 'google-maps', 'toaster', 'geolocation', 'ngLoader']);
 
 window.uploadUrl = 'upload.php';
@@ -164,6 +165,7 @@ phonecatControllers.controller('home',
                         $scope.areaname.name = data[i].long_name;
                         $scope.$apply();
                         console.log($scope.areaname);
+                        selectedarea = $scope.areaname.name
                     }
                 }
                 var citywegot = 9;
@@ -219,6 +221,7 @@ phonecatControllers.controller('home',
         $scope.areachange = function (area) {
             console.log("area clicked ");
             console.log(area);
+            selectedarea = area.name;
             $("input[name=area]").val(area.name);
             $scope.searchshowarea = false;
             lat = area.lat;
@@ -1262,6 +1265,7 @@ phonecatControllers.controller('OtherCtrl',
         $scope.area = "";
         $scope.form = [];
         $scope.areaname = {};
+        $scope.areaname.area = selectedarea;
         $scope.showhidediv = function () {
             if ($scope.profilepasword == "false")
                 $scope.profilepasword = "true";
@@ -1516,7 +1520,7 @@ phonecatControllers.controller('OtherCtrl',
         }
 
         $scope.getuserscurrrentlocation = function () {
-            navigator.geolocation.getCurrentPosition(showPosition2, showError);
+            //            navigator.geolocation.getCurrentPosition(showPosition2, showError);
         }
 
 
@@ -1572,7 +1576,7 @@ phonecatControllers.controller('OtherCtrl',
         var getcity = function (data, status) {
             $scope.cities = data;
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition2, showError);
+//                navigator.geolocation.getCurrentPosition(showPosition2, showError);
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
