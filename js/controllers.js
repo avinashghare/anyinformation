@@ -6,7 +6,7 @@ var pat = '\home';
 var cityis = {};
 var geoposition = {};
 var searchquery = "";
-var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'restservice', 'ngRoute', 'angularFileUpload', 'ngTagsInput', 'ngDialog', 'google-maps', 'toaster', 'geolocation']);
+var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'restservice', 'ngRoute', 'angularFileUpload', 'ngTagsInput', 'ngDialog', 'google-maps', 'toaster', 'geolocation', 'ngLoader']);
 
 window.uploadUrl = 'upload.php';
 
@@ -29,6 +29,7 @@ phonecatControllers.controller('home',
         $scope.showmorecat = true;
         $scope.applyclass = "loadmore";
         $scope.areaname = {};
+        $scope.showloading = true;
         //        $scope.changepasswordvisible = "false";
         var callback = function () {
             console.log("");
@@ -196,6 +197,7 @@ phonecatControllers.controller('home',
 
             $scope.homecategory = partitionarray($scope.homecategory, 6);
             console.log(partitionarray($scope.homecategory, 6));
+            $scope.showloading = false;
         };
 
         RestService.getallparentcategories().success(maincategories);
@@ -424,6 +426,7 @@ phonecatControllers.controller('category',
         //  LOGIN FROM CATEGORY START
         $scope.login = [];
         $scope.searchq = {};
+        $scope.showloading = true;
 
         var loginsuccess = function (data, status) {
             console.log("after login");
@@ -625,8 +628,10 @@ phonecatControllers.controller('category',
                     });
                 }
             }
+            $scope.showloading = false;
         };
         $scope.allListings = function (pagedata) {
+            $scope.showloading = true;
             console.log(pagedata);
             $scope.activepage = pagedata.page;
             console.log("get user folders");
@@ -2050,6 +2055,7 @@ phonecatControllers.controller('categorysearch',
         $scope.login = [];
         $scope.searchq = {};
         $scope.searchq.search = searchquery;
+        $scope.showloading = true;
 
         var loginsuccess = function (data, status) {
             console.log("after login");
@@ -2243,8 +2249,10 @@ phonecatControllers.controller('categorysearch',
                     });
                 }
             }
+            $scope.showloading = false;
         };
         $scope.allListings = function (pagedata) {
+            $scope.showloading = true;
             console.log(pagedata);
             $scope.activepage = pagedata.page;
             RestService.getlistingbycategorysearch(pagedata).success(getlisting);

@@ -105,6 +105,7 @@
     <script src="lib/js/angularimage/angular-file-upload-shim.js"></script>
     <script src="lib/js/angularimage/angular-file-upload.js"></script>
     <script src="lib/js/lightbox.js"></script>
+    <script src="lib/js/ngLoader.min.js"></script>
     
 
 

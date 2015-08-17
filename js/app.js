@@ -10,7 +10,8 @@ var firstapp = angular.module('firstapp', [
   'phonecatControllers',
   'templateservicemod',
     'ui.bootstrap',
-    'ui.utils'
+    'ui.utils',
+    'ngLoader'
 
 ]);
 
