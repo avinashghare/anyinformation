@@ -1,5 +1,5 @@
 <section>
-    <loader working="showloading" disable-background="true" message="Loading..." template="1">
+    <loader style="top: -10% !important;" working="showloading" disable-background="true" message="Loading..." template="1">
     </loader>
     <div id="link" class="container">
         <toaster-container></toaster-container>
@@ -8,7 +8,7 @@
             <!--            <img ng-src="{{'png/'+banner.banner | imagepath1}}" ng-show="banner.banner!=''" width="100%">  'ad/ad.jpg'-->
         </div>
 
-        <div class="row">
+        <div class="row" ng-hide="showloading">
             <div class="col-sm-3">
                 <div class="cat-aside">
                     <div class="left-sidebar">
@@ -123,9 +123,21 @@ left: 454px;">Enquiry</a>
         </div>
     </div>
     </div>
-
+    <div class="row" ng-show="showloading">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
     <nav>
-        <ul class="pagination">
+        <ul class="pagination" ng-hide="showloading">
             <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="allListings({page:page.pageno,limit:pagedata.limit,search:pagedata.search});">{{page.pageno}}</a>
             </li>
         </ul>

@@ -1,6 +1,6 @@
 //var onlyadminurl = "http://mafiawarloots.com/foranyinformation/";
-var onlyadminurl = "http://localhost/anyinformation/admin/";
-//var onlyadminurl="http://www.anyinformation.com/admin/";
+//var onlyadminurl = "http://localhost/anyinformation/admin/";
+var onlyadminurl="http://www.anyinformation.com/admin/";
 //var onlyadminurl="http://www.foranyinformation.com/admin/";
 var adminurl = onlyadminurl + "index.php/json/";
 //var adminurl="http://localhost/foranyinformation/index.php/json/";

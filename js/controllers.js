@@ -236,9 +236,14 @@ phonecatControllers.controller('home',
             }
         }
 
-        $scope.innershearch = function () {
+        //        $scope.innershearch = function () {
+        //            //            RestService.recentvisit($scope.searchid);
+        //            $location.url("/detail/" + $scope.searchid);
+        //        };
+        $scope.innershearch = function (text) {
             //            RestService.recentvisit($scope.searchid);
-            $location.url("/detail/" + $scope.searchid);
+            //            $location.url("/detail/" + $scope.searchid);
+            $location.url("/categorysearch/" + text);
         };
 
         var searchareasuccess = function (data, status) {
@@ -334,7 +339,8 @@ phonecatControllers.controller('home',
                 $location.url("/categorysearch/" + text);
             } else {
                 if (text != "" && city != null && city != "") {
-                    RestService.searchcategory(text, city, lat, long).success(searchsuccess);
+                    if (text.length >= 3)
+                        RestService.searchcategory(text, city, lat, long).success(searchsuccess);
                 } else {
                     $scope.searchshow = false;
                 }
@@ -1313,7 +1319,8 @@ phonecatControllers.controller('OtherCtrl',
             console.log(text);
             if (text != "") {
                 console.log(city);
-                RestService.searcharea(text, city).success(searchareasuccess);
+                if (text.length >= 3)
+                    RestService.searcharea(text, city).success(searchareasuccess);
             } else {
                 $scope.searchshowarea = false;
             }
@@ -1513,10 +1520,10 @@ phonecatControllers.controller('OtherCtrl',
         }
 
 
-        $scope.innershearch = function () {
-            RestService.recentvisit($scope.searchid);
-            $location.url("/detail/" + $scope.searchid);
-        };
+        //        $scope.innershearch = function () {
+        //            RestService.recentvisit($scope.searchid);
+        //            $location.url("/detail/" + $scope.searchid);
+        //        };
 
         var searchsuccess = function (data1, status) {
             console.log(data1);
