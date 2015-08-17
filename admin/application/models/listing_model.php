@@ -65,6 +65,11 @@ class Listing_model extends CI_Model
         $query=$this->db->query("SELECT * from `listing` WHERE `id` IN ($ids)")->result();
         return $query;
     }
+    public function tatallisting()
+    {
+        $query=$this->db->query("SELECT COUNT(`id`) AS `totalcount` from `listing` WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1")->row();
+        return $query;
+    }
     public function createcategorybylisting($value,$listingid)
 	{
 		$data  = array(
@@ -817,14 +822,31 @@ INNER JOIN `category` ON `listingcategory`.`category`=`category`.`id`");
     
     function exportduplicatelistingcsv($ids)
 	{
+//        SELECT  `listing`.`id` AS  `id` ,  `listing`.`name` AS  `name` ,  `listing`.`address` AS  `address` ,  `listing`.`email` AS  `email` , `listing`.`contactno` AS  `contactno` ,  `listing`.`pointer` AS  `pointer` ,  `listing`.`area` AS  `areaid` , 1
+//FROM  `listing` 
+//WHERE  `listing`.`deletestatus` =1
+//AND  `listing`.`type` =1
+//AND  `listing`.`id` 
+//IN ( 69761, 70096, 185600, 185607, 185586, 185602, 69658, 70092, 187018, 187064, 187031, 187065, 187040, 187074, 187056, 187199, 187095, 187175, 187096, 187179, 69620, 70097, 187423, 187431, 187426, 187434, 69698, 70093, 69537, 69538, 186354, 186355, 186434, 186435, 185916, 185917 ) 
+//AND ( 1 ) 
+//ORDER BY  `name` ,  `contactno` ,  `address` ASC , 1
+        
 		$this->load->dbutil();
-		$query=$this->db->query("SELECT `listing`.`id`,`listing`. `name` AS `Name`,`listing`. `lat` AS `Latitude`,`listing`. `long` AS `Longitude`,`listing`. `address` AS `Address`,`city`.`name` AS `City`,`listing`. `pincode` AS `Pincode`,`listing`. `state` AS `State`,`listing`. `country` AS `Country`,`listing`. `description` AS `Description`,`listing`. `logo` AS `Logo`,`listing`. `contactno` AS `Contact Number`,`listing`. `mobile` AS `Mobile Number`,`listing`. `email` AS `Email`,`listing`. `yearofestablishment` AS `Year Of Establishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `video`,`listing`. `pointer`,`location`.`name` AS `Area`,`listing`. `pointerstartdate`,`listing`. `pointerenddate` , GROUP_CONCAT(`category`.`name`) AS `category`
+		$query=$this->db->query("SELECT `listing`.`id`,`listing`. `name` AS `name`,`listing`. `address` AS `Address`,`city`.`name` AS `City`,`listing`. `pincode` AS `Pincode`,`listing`. `state` AS `State`,`listing`. `country` AS `Country`,`listing`. `description` AS `Description`,`listing`. `contactno` AS `contactno`,`listing`. `mobile` AS `mobile`,`listing`. `email` AS `email` , GROUP_CONCAT(`category`.`name`) AS `category`
 FROM `listing` 
-LEFT OUTER JOIN `location` ON `listing`.`area`=`location`.`id`
-LEFT OUTER JOIN `city` ON `location`.`cityid`=`city`.`id`
+LEFT OUTER JOIN `city` ON `listing`.`city`=`city`.`id`
 INNER JOIN `listingcategory` ON `listingcategory`.`listing`=`listing`.`id`
 INNER JOIN `category` ON `listingcategory`.`category`=`category`.`id`
-WHERE `listing`.`id` IN $ids");
+WHERE `listing`.`id` IN $ids ORDER BY  `name` ,  `contactno` ,  `address` ASC ");
+        echo $query;
+
+//		$this->load->dbutil();
+//		$query=$this->db->query("SELECT `listing`.`id`,`listing`. `name` AS `name`,`listing`. `lat` AS `Latitude`,`listing`. `long` AS `Longitude`,`listing`. `address` AS `Address`,`city`.`name` AS `City`,`listing`. `pincode` AS `Pincode`,`listing`. `state` AS `State`,`listing`. `country` AS `Country`,`listing`. `description` AS `Description`,`listing`. `logo` AS `Logo`,`listing`. `contactno` AS `Contact Number`,`listing`. `mobile` AS `Mobile Number`,`listing`. `email` AS `Email`,`listing`. `yearofestablishment` AS `Year Of Establishment`,`listing`. `timeofoperation_start`,`listing`. `timeofoperation_end`,`listing`. `type`,`listing`. `video`,`listing`. `pointer`,`listing`. `pointerstartdate`,`listing`. `pointerenddate` , GROUP_CONCAT(`category`.`name`) AS `category`
+//FROM `listing` 
+//LEFT OUTER JOIN `city` ON `listing`.`city`=`city`.`id`
+//INNER JOIN `listingcategory` ON `listingcategory`.`listing`=`listing`.`id`
+//INNER JOIN `category` ON `listingcategory`.`category`=`category`.`id`
+//WHERE `listing`.`id` IN $ids");
 
        $content= $this->dbutil->csv_from_result($query);
         //$data = 'Some file data';
@@ -841,6 +863,43 @@ WHERE `listing`.`id` IN $ids");
         }
 	}
     
+    
+	function getidsofduplicatedatanew($categoryid)
+	{
+        
+		$query="SELECT COUNT(`listing`. `id`) AS `count`,GROUP_CONCAT(DISTINCT `listing`. `id` SEPARATOR ',') AS `ids` 
+FROM `listingcategory` LEFT OUTER JOIN `listing` ON `listing`.`id`=`listingcategory`.`listing`
+WHERE `listingcategory`.`category`='$categoryid'
+GROUP BY `listing`.`name`,`listing`.`area`,`listing`.`contactno`,`listing`.`address`
+HAVING `count`>1";
+        
+	   
+		$query=$this->db->query($query)->result();
+        if(empty($query))
+        {
+            $allids="(0)";
+        }
+        else
+        {
+            $allids="(";
+            foreach($query as $key=>$p_row)
+            {
+                $ids = $p_row->ids;
+                if($key==0)
+                {
+                    $allids.=$ids;
+                }
+                else
+                {
+                    $allids.=",".$ids;
+                }
+            }
+            rtrim($allids,',');
+            ltrim($allids,',');
+            $allids.=")";
+        }
+		return $allids;
+	}
     
 	function getidsofduplicatedata($page,$max)
 	{
@@ -920,5 +979,19 @@ HAVING `count`>1 LIMIT $startfrom,$totallength")->result();
         
 //		return $query;
 	}
+    
+    
+    public function getlistingdropdownbyname($name) {
+        $query = "SELECT * FROM `listing`
+        WHERE `name` LIKE '%$name%' ";
+        $listing = $this->db->query($query)->result();
+        return $listing;
+    }
+    public function getlistingdropdownbyid($id) {
+        $query = "SELECT * FROM `listing`
+        WHERE `id` = '$id' ";
+        $listing = $this->db->query($query)->result();
+        return $listing;
+    }
 }
 ?>

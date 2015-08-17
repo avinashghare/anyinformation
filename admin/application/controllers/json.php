@@ -30,6 +30,14 @@ class Json extends CI_Controller
 	{
         $data = json_decode(file_get_contents('php://input'), true);
 //        print_r($data);
+        if($data==NULL)
+        {
+           // print_r($data);
+            $data['message']=0;
+            $this->load->view('json',$data);
+        }
+        else
+        {
             $firstname=$data['firstname'];
 			$lastname=$data['lastname'];
 			$email=$data['email'];
@@ -52,6 +60,7 @@ class Json extends CI_Controller
 			$data['message']=1;
         
         $this->load->view('json',$data);
+        }
 		
 	}
     
@@ -60,6 +69,14 @@ class Json extends CI_Controller
 	{
         $data = json_decode(file_get_contents('php://input'), true);
 //        print_r($data);
+        if($data==NULL)
+        {
+           // print_r($data);
+            $data['message']=0;
+            $this->load->view('json',$data);
+        }
+        else
+        {
             $name=$data['name'];
 			$user=$data['user'];
 			$lat=$data['latitude'];
@@ -107,7 +124,7 @@ class Json extends CI_Controller
 			$data['message']="1";
         
         $this->load->view('json',$data);
-		
+        }
 	}
     public function enquiryuser()
     {
@@ -429,23 +446,42 @@ class Json extends CI_Controller
     public function changepassword()
     {
         $data = json_decode(file_get_contents('php://input'), true);
+        if($data==NULL)
+        {
+           // print_r($data);
+            $data['message']=0;
+            $this->load->view('json',$data);
+        }
+        else
+        {
         $id=$data['id'];
         $oldpassword=$data['oldpassword'];
         $newpassword=$data['newpassword'];
         $data['message']=$this->user_model->changefrontendpassword($id,$oldpassword,$newpassword);
         $this->load->view('json',$data);
+        }
     
     }
     
     public function addrating()
     {
         $data = json_decode(file_get_contents('php://input'), true);
+       // echo "hello";
+        if($data==NULL)
+        {
+           // print_r($data);
+            $data['message']=0;
+            $this->load->view('json',$data);
+        }
+        else
+        {
         $listing=$data['listing'];
         $rating=$data['rating'];
 //        $user=1;
         $user=$this->session->userdata("id");
         $data['message']=$this->listing_model->addrating($user,$listing,$rating);
         $this->load->view('json',$data);
+        }
     }
    
     public function addlatlong()

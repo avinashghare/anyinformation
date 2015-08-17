@@ -1024,7 +1024,7 @@ class Site extends CI_Controller
 		$this->checkaccess($access);
 		$data['page']='viewlisting';
         
-        
+//        $data['totalcount']=$this->listing_model->tatallisting();
         $data['base_url'] = site_url("site/viewlistingjson");
         
         
@@ -1086,11 +1086,11 @@ class Site extends CI_Controller
         $elements[6]->header="Areaid";
         $elements[6]->alias="areaid";
         
-        $elements[7]=new stdClass();
-        $elements[7]->field="`location`.`name`";
-        $elements[7]->sort="1";
-        $elements[7]->header="Area";
-        $elements[7]->alias="area";
+//        $elements[7]=new stdClass();
+//        $elements[7]->field="`location`.`name`";
+//        $elements[7]->sort="1";
+//        $elements[7]->header="Area";
+//        $elements[7]->alias="area";
         
         $search=$this->input->get_post("search");
         $pageno=$this->input->get_post("pageno");
@@ -1108,7 +1108,7 @@ class Site extends CI_Controller
             $orderorder="ASC";
         }
        
-        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing` LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`","WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1");
+        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing`","WHERE `listing`.`deletestatus`=1");
         
 		$this->load->view("json",$data);
 	} 
@@ -2599,7 +2599,9 @@ class Site extends CI_Controller
 		$data[ 'paymenttype' ] =$this->paymenttype_model->getpaymenttypedropdown();
 		$data[ 'period' ] =$this->paymenttype_model->getperioddropdown();
 		$data[ 'user' ] =$this->listing_model->getuserdropdown();
-		$data[ 'listing' ] =$this->listing_model->getlistingdropdown();
+//		$data[ 'listing' ] =$this->listing_model->getlistingdropdown();
+//        $listingid=$data['before']->listing;
+//        $data['listing']=$this->listing_model->beforeedit($listingid);
 		$data[ 'page' ] = 'createbilling';
 		$data[ 'title' ] = 'Create billing';
 		$this->load->view( 'template', $data );	
@@ -2622,7 +2624,9 @@ class Site extends CI_Controller
 			$data[ 'paymenttype' ] =$this->paymenttype_model->getpaymenttypedropdown();
             $data[ 'period' ] =$this->paymenttype_model->getperioddropdown();
             $data[ 'user' ] =$this->listing_model->getuserdropdown();
-            $data[ 'listing' ] =$this->listing_model->getlistingdropdown();
+        $listingid=$data['before']->listing;
+        $data['listing']=$this->listing_model->beforeedit($listingid);
+//            $data[ 'listing' ] =$this->listing_model->getlistingdropdown();
             $data[ 'page' ] = 'createbilling';
             $data[ 'title' ] = 'Create billing';
             $this->load->view( 'template', $data );	
@@ -2657,8 +2661,10 @@ class Site extends CI_Controller
         $data[ 'paymenttype' ] =$this->paymenttype_model->getpaymenttypedropdown();
         $data[ 'period' ] =$this->paymenttype_model->getperioddropdown();
         $data[ 'user' ] =$this->listing_model->getuserdropdown();
-        $data[ 'listing' ] =$this->listing_model->getlistingdropdown();
+//        $data[ 'listing' ] =$this->listing_model->getlistingdropdown();
 		$data['before']=$this->billing_model->beforeedit($this->input->get('id'));
+        $listingid=$data['before']->listing;
+        $data['listing']=$this->listing_model->beforeedit($listingid);
 		$data['page']='editbilling';
 		$data['title']='Edit billing';
 		$this->load->view('template',$data);
@@ -4487,13 +4493,7 @@ class Site extends CI_Controller
     
     function viewduplicatelistingjson()
 	{
-        $search=$this->input->get_post("search");
-        $pageno=$this->input->get_post("pageno");
-        $orderby=$this->input->get_post("orderby");
-        $orderorder=$this->input->get_post("orderorder");
-        $maxrow=$this->input->get_post("maxrow");
-        
-        $ids=$this->listing_model->getidsofduplicatedata($pageno,$maxrow);
+//        $ids=$this->listing_model->getidsofduplicatedata($pageno,$maxrow);
         
         
         $ids=$this->input->get('ids');
@@ -4548,6 +4548,12 @@ class Site extends CI_Controller
         $elements[7]->sort="1";
         $elements[7]->header="Area";
         $elements[7]->alias="area";
+        
+        $search=$this->input->get_post("search");
+        $pageno=$this->input->get_post("pageno");
+        $orderby=$this->input->get_post("orderby");
+        $orderorder=$this->input->get_post("orderorder");
+        $maxrow=$this->input->get_post("maxrow");
         
         
         if($maxrow=="")
@@ -4628,11 +4634,11 @@ class Site extends CI_Controller
         $elements[6]->header="Areaid";
         $elements[6]->alias="areaid";
         
-        $elements[7]=new stdClass();
-        $elements[7]->field="`location`.`name`";
-        $elements[7]->sort="1";
-        $elements[7]->header="Area";
-        $elements[7]->alias="area";
+//        $elements[7]=new stdClass();
+//        $elements[7]->field="`location`.`name`";
+//        $elements[7]->sort="1";
+//        $elements[7]->header="Area";
+//        $elements[7]->alias="area";
         
         $search=$this->input->get_post("search");
         $pageno=$this->input->get_post("pageno");
@@ -4646,11 +4652,11 @@ class Site extends CI_Controller
         
         if($orderby=="")
         {
-            $orderby="name";
+            $orderby="id";
             $orderorder="ASC";
         }
        
-        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing` LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`","WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1 AND `listing`.`lat`='18.9750' AND `listing`.`long`='72.8258'");
+        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing`","WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1 AND `listing`.`lat`='18.9750' AND `listing`.`long`='72.8258'");
         
 		$this->load->view("json",$data);
 	} 
@@ -4677,5 +4683,135 @@ class Site extends CI_Controller
 //		$this->load->view('template',$data);
 	}
     
+    
+    
+	public function viewduplicatelistingbycategorycreate()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+        $cat=$this->category_model->getcategorytreeforlisting(0);
+        $cat1=$this->getarray($cat,"");
+        
+        $data['category']=$cat1;
+		$data[ 'page' ] = 'viewduplicatelistingbycategorycreate';
+		$data[ 'title' ] = 'Select Category For Duplicate listings';
+		$this->load->view( 'template', $data );	
+	}
+    
+    
+    function viewduplicatelistingbycategory()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+		$data['page']='viewduplicatelisting';
+        
+        $categoryid=$this->input->get_post('category');
+        $data['category']=$categoryid;
+        $data['base_url'] = site_url("site/viewduplicatelistingbycategoryjson?categoryid=".$categoryid);
+        
+        
+		$data['title']='View Duplicate listing';
+		$this->load->view('template',$data);
+	} 
+    
+    function viewduplicatelistingbycategoryjson()
+	{
+        $categoryid=$this->input->get('categoryid');
+        $ids=$this->listing_model->getidsofduplicatedatanew($categoryid);
+        
+		$access = array("1");
+		$this->checkaccess($access);
+        
+        $elements=array();
+        $elements[0]=new stdClass();
+        $elements[0]->field="`listing`.`id`";
+        $elements[0]->sort="1";
+        $elements[0]->header="ID";
+        $elements[0]->alias="id";
+        
+        $elements[1]=new stdClass();
+        $elements[1]->field="`listing`.`name`";
+        $elements[1]->sort="1";
+        $elements[1]->header="Name";
+        $elements[1]->alias="name";
+        
+        $elements[2]=new stdClass();
+        $elements[2]->field="`listing`.`address`";
+        $elements[2]->sort="1";
+        $elements[2]->header="Address";
+        $elements[2]->alias="address";
+        
+        $elements[3]=new stdClass();
+        $elements[3]->field="`listing`.`email`";
+        $elements[3]->sort="1";
+        $elements[3]->header="Email";
+        $elements[3]->alias="email";
+        
+        $elements[4]=new stdClass();
+        $elements[4]->field="`listing`.`contactno`";
+        $elements[4]->sort="1";
+        $elements[4]->header="Contact No";
+        $elements[4]->alias="contactno";
+        
+        $elements[5]=new stdClass();
+        $elements[5]->field="`listing`.`pointer`";
+        $elements[5]->sort="1";
+        $elements[5]->header="Pointer";
+        $elements[5]->alias="pointer";
+        
+        $elements[6]=new stdClass();
+        $elements[6]->field="`listing`.`area`";
+        $elements[6]->sort="1";
+        $elements[6]->header="Areaid";
+        $elements[6]->alias="areaid";
+        
+        $search=$this->input->get_post("search");
+        $pageno=$this->input->get_post("pageno");
+        $orderby=$this->input->get_post("orderby");
+        $orderorder=$this->input->get_post("orderorder");
+        $maxrow=$this->input->get_post("maxrow");
+        
+        
+        if($maxrow=="")
+        {
+            $maxrow=20;
+        }
+        
+        if($orderby=="")
+        {
+            $orderby="name";
+            $orderorder="ASC";
+        }
+       
+        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing`","WHERE `listing`.`deletestatus`=1 AND `listing`.`type`=1 AND `listing`.`id` IN $ids");
+        
+		$this->load->view("json",$data);
+	} 
+    
+    
+    	public function exportduplicatelistingbycategorycsv()
+	{
+		$access = array("1");
+		$this->checkaccess($access);
+            
+        $categoryid=$this->input->get('categoryid');
+        $ids=$this->listing_model->getidsofduplicatedatanew($categoryid);
+        
+		$this->listing_model->exportduplicatelistingcsv($ids);
+        $data['redirect']="site/viewduplicatelisting";
+        $this->load->view("redirect",$data);
+	}
+    public function getlistingdropdownbyname() {
+        $name=$this->input->get_post("name");
+        $data1 = $this->listing_model->getlistingdropdownbyname($name);
+        $data["message"] = $data1;
+        $this->load->view("json", $data);
+    }
+    public function getlistingdropdownbyid() {
+        $id=$this->input->get_post("id");
+        $data1 = $this->listing_model->getlistingdropdownbyid($id);
+        $data["message"] = $data1;
+        $this->load->view("json", $data);
+    }
 }
 ?>

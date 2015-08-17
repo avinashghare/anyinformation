@@ -50,6 +50,16 @@ class Cron extends CI_Controller
 	
 	}
     
+    function checklangauge() {
+        $language=$this->input->get("language");
+        $this->lang->load("$language", $language);
+        $data["message"]=$this->lang->line('checking');
+//        echo $data["message"];
+        $this->load->view("json",$data);
+    }
+    
+    
+    
 }
 //EndOfFile
 ?>

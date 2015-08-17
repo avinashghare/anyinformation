@@ -1,9 +1,10 @@
 <div class=" row" style="padding:1% 0;">
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-9">
 	
-		<div class=" pull-right col-md-1 createbtn" ><a class="btn btn-primary" href="<?php echo site_url('site/exportduplicatelistingcsv'); ?>"target="_blank"><i class="icon-plus"></i>Export to CSV </a></div>
+		<div class=" pull-right col-md-1 createbtn" ><a class="btn btn-primary" href="<?php echo site_url('site/exportduplicatelistingbycategorycsv?categoryid='.$category); ?>"target="_blank"><i class="icon-plus"></i>Export to CSV </a></div>
 	</div>
+<!--
 	<div class="col-md-3">
 	
 		<a class="btn btn-primary pull-right"  href="<?php echo site_url('site/createlisting'); ?>"><i class="icon-plus"></i>Create </a> &nbsp; 
@@ -13,6 +14,7 @@
 	
 		<a class="btn btn-primary"  href="<?php echo site_url('site/uploadlistingcsv'); ?>"><i class="icon-upload" onclick="return confirm('Are you sure you want to delete?')"></i>Upload Listing</a> &nbsp; 
 	</div>
+-->
 	
 <!--
 	<div class="col-md-2">
@@ -37,7 +39,6 @@
                         <th data-field="id">Id</th>
                         <th data-field="name">Name</th>
                         <th data-field="address">Address</th>
-                        <th data-field="area">Area</th>
                         <th data-field="email">Email</th>
                         <th data-field="contactno">Contact No</th>
                         <th data-field="pointer">Pointer</th>
@@ -59,7 +60,7 @@
                     resultrow.address="";
                 }
                 var deletestring="";
-                return "<tr><td><input type='checkbox' class='deleteall all checkbox1' name='name[]' value='"+ resultrow.id +"'></td><td>" + resultrow.id + "</td><td>" + resultrow.name + "</td><td>" + resultrow.address + "</td><td>" + resultrow.area + "</td><td>" + resultrow.email + "</td><td>" + resultrow.contactno + "</td><td>" + resultrow.pointer + "</td><tr>";
+                return "<tr><td><input type='checkbox' class='deleteall all checkbox1' name='name[]' value='"+ resultrow.id +"'></td><td>" + resultrow.id + "</td><td>" + resultrow.name + "</td><td>" + resultrow.address + "</td><td>" + resultrow.email + "</td><td>" + resultrow.contactno + "</td><td>" + resultrow.pointer + "</td><tr>";
             }
             generatejquery('<?php echo $base_url;?>');
         </script>
@@ -86,7 +87,7 @@
         //                if(msg==1)
         //                    alert("Listing deleted");
 
-                        window.location.replace("<?php echo site_url('site/viewduplicatelisting'); ?>");
+                        window.location.replace("<?php echo site_url('site/viewduplicatelistingbycategorycreate'); ?>");
                     },'json');
                 }
 				

@@ -36,34 +36,67 @@ function generatejquery(url)
                         $(".drawchintantable table tbody").append(drawtable(result[i]));
                     }
 
+                    
+                    $(".data-totalvalues").text(data.totalvalues);
+                    $(".data-totalpagenumbers").text(data.lastpage);
 
 
 
                     $(".chintantablepagination ul.pagination").html("");
+                    $(".chintantablepagination .pagenoinput").remove();
+                    
                     if (data.pageno != 1) {
                         $(".chintantablepagination ul.pagination").append('<li><a href="#" data-page="' + (data.pageno - 1) + '"><span aria-hidden="true">&laquo;</span></a></li>');
                     } else {
                         $(".chintantablepagination ul.pagination").append('<li class="disabled"><a href="#" data-page="' + (data.pageno) + '"><span aria-hidden="true">&laquo;</span></a></li>');
                     }
 
-                    for (var i = 0; i < data.lastpage; i++) {
+                    var maxbuffer=2
+                    var startbuff=(data.pageno-1)-maxbuffer;
+                    var endbuff=data.pageno+maxbuffer;
+                    
+                    if(startbuff<0)
+                    {
+                        startbuff=0;
+                    }
+                    if(endbuff>data.lastpage)
+                    {
+                        endbuff=data.lastpage;
+                    }
+                    
+                    
+                    for (var i = startbuff; i < endbuff; i++) {
                         if ((i + 1) == data.pageno)
                             $(".chintantablepagination ul.pagination").append('<li class="active" ><a href="#" data-page="' + (i + 1) + '">' + (i + 1) + '</a>');
                         else
                             $(".chintantablepagination ul.pagination").append('<li><a href="#" data-page="' + (i + 1) + '">' + (i + 1) + '</a>');
                     }
+                    
+                    
                     if (data.pageno != data.lastpage) {
                         $(".chintantablepagination ul.pagination").append('<li><a href="#" data-page="' + (data.pageno + 1) + '"><span aria-hidden="true">&raquo;</span></a></li>');
                     } else {
                         $(".chintantablepagination ul.pagination").append('<li class="disabled"><a href="#" data-page="' + (data.pageno) + '"><span aria-hidden="true">&raquo;</span></a></li>');
                     }
 
+                    
+                    $(".chintantablepagination").append("<div class='pagenoinput' style='float:right;width: 146px;'><input type='number' min='1' max='"+data.lastpage+"' placeholder='Page no.' class='form-control pagenotovisit' style='width: 100px;float: left;'/> <a href='#' class='pagetovisitbutton btn btn-default'>Go</a></div>");
+                    
+                    
                     $(".chintantablepagination ul.pagination li a").click(function () {
                         pageno = parseInt($(this).attr("data-page"));
                         fillchintandata();
                         return false;
 
                     });
+                    
+                    $(".chintantablepagination .pagenoinput a.pagetovisitbutton").click(function () {
+                        pageno = parseInt($('.chintantablepagination .pagenoinput input').val());
+                        fillchintandata();
+                        return false;
+
+                    });
+                    
                     var allpages=$(".chintantablepagination ul.pagination li a");
                     var totalwidth=0;
                     console.log("Length: "+allpages.length);
