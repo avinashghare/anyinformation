@@ -46,11 +46,14 @@
 <input type="checkbox" id="selecctall"/> Selecct All</th>
                         <th data-field="id">Id</th>
                         <th data-field="name">Name</th>
+                        <th data-field="categoryname">Category</th>
                         <th data-field="address">Address</th>
 <!--                        <th data-field="area">Area</th>-->
                         <th data-field="email">Email</th>
+<!--
                         <th data-field="contactno">Contact No</th>
                         <th data-field="pointer">Pointer</th>
+-->
                         <th data-field="action"> Actions </th>
                     </tr>
                 </thead>
@@ -69,7 +72,7 @@
                     resultrow.address="";
                 }
                 var deletestring="";
-                return "<tr><td><input type='checkbox' class='deleteall all checkbox1' name='name[]' value='"+ resultrow.id +"'></td><td>" + resultrow.id + "</td><td>" + resultrow.name + "</td><td>" + resultrow.address + "</td><td>" + resultrow.email + "</td><td>" + resultrow.contactno + "</td><td>" + resultrow.pointer + "</td><td><a class='btn btn-primary btn-xs' href='<?php echo site_url('site/editlisting?id=');?>"+resultrow.id +"'><i class='icon-pencil'></i></a><a class='btn btn-danger btn-xs'  onclick=\"return confirm('Are you sure you want to delete?')\" href='<?php echo site_url('site/deletelisting?id='); ?>"+resultrow.id +"'><i class='icon-trash '></i></a></td><tr>";
+                return "<tr><td><input type='checkbox' class='deleteall all checkbox1' name='name[]' value='"+ resultrow.id +"'></td><td>" + resultrow.id + "</td><td>" + resultrow.name + "</td><td>" + resultrow.categoryname + "</td><td>" + resultrow.address + "</td><td>" + resultrow.email + "</td><td><a class='btn btn-primary btn-xs' href='<?php echo site_url('site/editlisting?id=');?>"+resultrow.id +"'><i class='icon-pencil'></i></a><a class='btn btn-danger btn-xs'  onclick=\"return confirm('Are you sure you want to delete?')\" href='<?php echo site_url('site/deletelisting?id='); ?>"+resultrow.id +"'><i class='icon-trash '></i></a></td><tr>";
             }
             generatejquery('<?php echo $base_url;?>');
         </script>

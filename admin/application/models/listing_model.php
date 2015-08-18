@@ -55,6 +55,18 @@ class Listing_model extends CI_Model
 //		print_r($category);
 //        print_r($modeofpayment);
 //        print_r($daysofoperation);
+        
+        $message="<h3>All Details Of Listing</h3><br>Listing Name:'$name' <br>Listing address:'$address' <br>Listing state:'$state' <br>Listing contactno:'$contact' <br>Listing email:'$email' <br>Listing yearofestablishment:'$yearofestablishment' <br>";
+//        echo $msg;
+        //to user
+        $this->load->library('email');
+        $this->email->from('avinash@wohlig.com', 'For Any Information');
+        $this->email->to($email);
+        $this->email->subject('Thank You For Creating A Listing');
+        $this->email->message($message);
+//echo $message
+        $this->email->send();
+            
 		if(!$query)
 			return  0;
 		else
@@ -469,8 +481,8 @@ WHERE `listingcategory`.`category`='$id' AND `listing`.`deletestatus`=1 AND `lis
 	}
 	public function getonelistingbyid($id)
 	{
-		$query['listing']=$this->db->query("SELECT `listing`.`name`,`listing`.`id` AS `listingid`, `listing`. `user`, `listing`.`lat`, `listing`.`long`, `listing`.`address`, `listing`.`city`, `listing`.`pincode`, `listing`.`state`, `listing`.`country`, `listing`.`description`, `listing`.`logo`, `listing`.`contactno`, `listing`.`email`, `listing`.`website`, `listing`.`facebook`, `listing`.`twitter`, `listing`.`googleplus`, `listing`.`yearofestablishment`, `listing`.`timeofoperation_start`, `listing`.`timeofoperation_end`, `listing`.`type`, `listing`.`credits`, `listing`.`isverified`, `listing`.`video` , `listing`.`area`
-FROM `listing`
+		$query['listing']=$this->db->query("SELECT `listing`.`name`,`listing`.`id` AS `listingid`, `listing`. `user`, `listing`.`lat`, `listing`.`long`, `listing`.`address`, `listing`.`city` as `cityid`, `listing`.`pincode`, `listing`.`state`, `listing`.`country`, `listing`.`description`, `listing`.`logo`, `listing`.`contactno`, `listing`.`email`, `listing`.`website`, `listing`.`facebook`, `listing`.`twitter`, `listing`.`googleplus`, `listing`.`yearofestablishment`, `listing`.`timeofoperation_start`, `listing`.`timeofoperation_end`, `listing`.`type`, `listing`.`credits`, `listing`.`isverified`, `listing`.`video` , `listing`.`area`,`city`.`name` AS `city`
+FROM `listing` LEFT OUTER JOIN `city` ON `city`.`id`=`listing`.`city`
 WHERE `listing`.`id`='$id'")->row();
         
 		$query['categories']=$this->db->query("SELECT `listingcategory`.`listing`, `listingcategory`.`category`,`category`.`name` AS `categoryname` ,`category`.`banner` AS `banner`

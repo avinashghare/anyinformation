@@ -1037,12 +1037,6 @@ class Site extends CI_Controller
 		$access = array("1");
 		$this->checkaccess($access);
         
-//        SELECT DISTINCT `user`.`id` as `id`,`user`.`firstname` as `firstname`,`user`.`lastname` as `lastname`,`accesslevel`.`name` as `accesslevel`	,`user`.`email` as `email`,`user`.`contact` as `contact`,`user`.`status` as `status`,`user`.`accesslevel` as `access`
-//		FROM `user`
-//	   INNER JOIN `accesslevel` ON `user`.`accesslevel`=`accesslevel`.`id` 
-        
-//        SELECT `id`, `name`, `user`, `lat`, `long`, `address`, `city`, `pincode`, `state`, `country`, `description`, `logo`, `contactno`, `email`, `website`, `facebook`, `twitter`, `googleplus`, `yearofestablishment`, `timeofoperation_start`, `timeofoperation_end`, `type`, `credits`, `isverified`, `video`, `deletestatus` FROM `listing` 
-        
         $elements=array();
         $elements[0]=new stdClass();
         $elements[0]->field="`listing`.`id`";
@@ -1086,11 +1080,11 @@ class Site extends CI_Controller
         $elements[6]->header="Areaid";
         $elements[6]->alias="areaid";
         
-//        $elements[7]=new stdClass();
-//        $elements[7]->field="`location`.`name`";
-//        $elements[7]->sort="1";
-//        $elements[7]->header="Area";
-//        $elements[7]->alias="area";
+        $elements[7]=new stdClass();
+        $elements[7]->field="GROUP_CONCAT(`category`.`name`)";
+        $elements[7]->sort="1";
+        $elements[7]->header="Categories";
+        $elements[7]->alias="categoryname";
         
         $search=$this->input->get_post("search");
         $pageno=$this->input->get_post("pageno");
@@ -1108,7 +1102,7 @@ class Site extends CI_Controller
             $orderorder="ASC";
         }
        
-        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing`","WHERE `listing`.`deletestatus`=1");
+        $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements," FROM `listing` INNER JOIN `listingcategory` ON `listingcategory`.`listing`=`listing`.`id` INNER JOIN `category` ON `listingcategory`.`category`=`category`.`id`","WHERE `listing`.`deletestatus`=1","GROUP BY `listing`.`id`");
         
 		$this->load->view("json",$data);
 	} 
@@ -1302,24 +1296,13 @@ class Site extends CI_Controller
 			}
             
             
-        $message="<h3>All Details Of Listing</h3><br>Listing Name:'$name' <br>Listing address:'$address' <br>Listing state:'$state' <br>Listing contactno:'$contact' <br>Listing email:'$email' <br>Listing yearofestablishment:'$yearofestablishment' <br>";
-//        echo $msg;
-        //to user
-        $this->load->library('email');
-        $this->email->from('avinash@wohlig.com', 'For Any Information');
-        $this->email->to($email);
-        $this->email->subject('Thank You For Creating A Listing');
-        $this->email->message($message);
-//echo $message
-        $this->email->send();
-            
             
 			if($this->listing_model->create($name,$user,$lat,$long,$address,$city,$pincode,$state,$country,$description,$contact,$email,$website,$facebookuserid,$googleplus,$twitter,$yearofestablishment,$timeofoperation_start,$timeofoperation_end,$type,$credits,$isverified,$video,$logo,$category,$modeofpayment,$daysofoperation,$pointer,$area,$mobile,$status,$pointerstartdate,$pointerenddate)==0)
 			$data['alerterror']="New listing could not be created.";
 			else
 			$data['alertsuccess']="listing created Successfully.";
 			
-			$data['table']=$this->listing_model->viewlisting();
+//			$data['table']=$this->listing_model->viewlisting();
 			$data['redirect']="site/viewlisting";
 			//$data['other']="template=$template";
 			$this->load->view("redirect",$data);
@@ -1359,7 +1342,7 @@ class Site extends CI_Controller
 	{
 		$access = array("1");
 		$this->checkaccess($access);
-		$this->form_validation->set_rules('name','Name','trim|required');
+		$this->form_validation->set_rules('name','Name','trim');
 		$this->form_validation->set_rules('user','User','trim');
 		$this->form_validation->set_rules('lat','latitude','trim');
 		$this->form_validation->set_rules('long','longitude','trim');

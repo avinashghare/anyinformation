@@ -37,6 +37,8 @@
 			<div class="drawchintantable">
                 <?php $this->chintantable->createsearch("Default Lat Long Details");?>
                 <div class="messagedisplay" style="display:none;">Listing Deleted Successfully</div>
+                <div class="">Total Number of Listings are:- <b><span class="data-totalvalues"></span></b></div>
+                <div class="">Total Number of Pages are:- <b><span class="data-totalpagenumbers"></span></b></div>
                 <table class="table table-striped table-hover" id="" cellpadding="0" cellspacing="0" >
                 <thead>
                     <tr>
