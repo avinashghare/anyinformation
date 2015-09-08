@@ -162,7 +162,7 @@ var restservice = angular.module('restservice', [])
             return $http.get(adminurl + "sendemail?userid=" + userid + "&listingid=" + listingid, {});
         },
         getlistingbycategory: function (pagedata) {
-            return $http.get(adminurl + "getlistingbycategory?id=" + pagedata.search + "&pageno=" + pagedata.page + "&maxrow=" + pagedata.limit + "&lat=" + lat + "&long=" + long, {});
+            return $http.get(adminurl + "getlistingbycategory?id=" + pagedata.search + "&pageno=" + pagedata.page + "&maxrow=" + pagedata.limit + "&lat=" + $.jStorage.get("lat") + "&long=" + $.jStorage.get("long"), {});
         },
         enquiryuser: function (name, email, phone, comment) {
             return $http.get(adminurl + "addenquiryoflistingfromfrontend?listingid=" + $.jStorage.get("listingid") + "&name=" + name + "&email=" + email + "&phone=" + phone + "&comment=" + comment, {});
@@ -204,7 +204,7 @@ var restservice = angular.module('restservice', [])
             return $http.get(adminurl + "searcharea?cityid=" + city + "&area=" + text, {});
         },
         getlistingbycategorysearch: function (pagedata) {
-            return $http.get(adminurl + "getlistingbycategorysearch?text=" + pagedata.search + "&pageno=" + pagedata.page + "&maxrow=" + pagedata.limit + "&lat=" + lat + "&long=" + long, {});
+            return $http.get(adminurl + "getlistingbycategorysearch?text=" + pagedata.search + "&pageno=" + pagedata.page + "&maxrow=" + pagedata.limit + "&lat=" + $.jStorage.get("lat") + "&long=" + $.jStorage.get("long"), {});
         },
         getcategorynamebyid: function (catid) {
             return $http.get(adminurl + "getcategorynamebyid?id=" + catid, {});

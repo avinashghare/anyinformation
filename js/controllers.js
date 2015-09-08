@@ -145,6 +145,8 @@ phonecatControllers.controller('home',
             //$scope.coords = position.coords;
             lat = position.coords.latitude;
             long = position.coords.longitude;
+            $.jStorage.set("lat", position.coords.latitude);
+            $.jStorage.set("long", position.coords.longitude);
 
             $.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDqN3t8_Nb04MF7jTufq-bkEHogZxyeUHY", {}, function (data) {
                 console.log(data);
@@ -166,6 +168,7 @@ phonecatControllers.controller('home',
                         $scope.$apply();
                         console.log($scope.areaname);
                         selectedarea = $scope.areaname.name
+                        $.jStorage.set("areaname", $scope.areaname.name);
                     }
                 }
                 var citywegot = 9;
@@ -179,6 +182,7 @@ phonecatControllers.controller('home',
                     }
                 }
                 $scope.form.cityy = citywegot;
+                $.jStorage.set("cityid", citywegot);
                 city = citywegot;
                 $scope.$apply();
                 console.log(citywegot);
@@ -222,10 +226,13 @@ phonecatControllers.controller('home',
             console.log("area clicked ");
             console.log(area);
             selectedarea = area.name;
+            $.jStorage.set("areaname", area.name);
             $("input[name=area]").val(area.name);
             $scope.searchshowarea = false;
             lat = area.lat;
             long = area.long;
+            $.jStorage.set("lat", area.lat);
+            $.jStorage.set("long", area.long);
         };
 
         $scope.totextbox = function (name, selected) {
@@ -324,6 +331,8 @@ phonecatControllers.controller('home',
             //            if (!city)
             //                city = 0;
             searchquery = text;
+            $.jStorage.set("search", text);
+            $.jStorage.set("cityid", city);
             console.log($event.keyCode)
             console.log(text + "--" + city + "--" + area);
             //            city = city;
@@ -1260,12 +1269,17 @@ phonecatControllers.controller('OtherCtrl',
         $scope.profilepasword = "false";
         $scope.changepasswordvisible = "false";
         $scope.searchshowarea = false;
-        $scope.search = searchquery;
+        $scope.search = $.jStorage.get("search");;
 
         $scope.area = "";
         $scope.form = [];
+        $scope.form.cityy = $.jStorage.get("cityid");
         $scope.areaname = {};
-        $scope.areaname.area = selectedarea;
+        $scope.areaname.area = $.jStorage.get("areaname");
+
+        lat = $.jStorage.get("lat");
+        long = $.jStorage.get("long");
+
         $scope.showhidediv = function () {
             if ($scope.profilepasword == "false")
                 $scope.profilepasword = "true";
@@ -1304,6 +1318,7 @@ phonecatControllers.controller('OtherCtrl',
             //            $scope.searchshowarea = false;
             console.log("area clicked ");
             console.log(area);
+            $.jStorage.set("areaname", area.name);
             $("input[name=area]").val(area.name);
             $scope.searchshowarea = false;
             lat = area.lat;
@@ -1576,7 +1591,7 @@ phonecatControllers.controller('OtherCtrl',
         var getcity = function (data, status) {
             $scope.cities = data;
             if (navigator.geolocation) {
-//                navigator.geolocation.getCurrentPosition(showPosition2, showError);
+                //                navigator.geolocation.getCurrentPosition(showPosition2, showError);
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
@@ -2065,7 +2080,7 @@ phonecatControllers.controller('categorysearch',
         //  LOGIN FROM CATEGORY START
         $scope.login = [];
         $scope.searchq = {};
-        $scope.searchq.search = searchquery;
+        $scope.searchq.search = $.jStorage.get("search");
         $scope.showloading = true;
 
         var loginsuccess = function (data, status) {
