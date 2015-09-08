@@ -1,7 +1,7 @@
 //var assetspath = "http://localhost/forany2/admin/assets/";
 //var assetspath = "http://www.foranyinformation.com/admin/assets/";
-//var assetspath = "http://www.anyinformation.com/admin/assets/";
-var assetspath = "http://localhost/anyinformation/admin/assets/";
+var assetspath = "http://www.anyinformation.com/admin/assets/";
+//var assetspath = "http://localhost/anyinformation/admin/assets/";
 
 // JavaScript Document
 var firstapp = angular.module('firstapp', [
