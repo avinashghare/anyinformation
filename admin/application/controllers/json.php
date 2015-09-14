@@ -775,7 +775,7 @@ class Json extends CI_Controller
         $elements[33]->alias="rating";
         
         $elements[33]=new stdClass();
-        $elements[33]->field="ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) * cos( radians(`listing`.`long`) - radians($long)) + sin(radians($lat)) * sin( radians(`listing`. `lat`)))),2)";
+        $elements[33]->field="IFNULL(ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) * cos( radians(`listing`.`long`) - radians($long)) + sin(radians($lat)) * sin( radians(`listing`. `lat`)))),2),5000)";
         $elements[33]->sort="1";
         $elements[33]->header="dist";
         $elements[33]->alias="dist";

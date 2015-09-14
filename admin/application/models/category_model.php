@@ -388,9 +388,9 @@ HAVING `enddateofbanner`=`fivedaysbefore`")->result();
         LIMIT 0 , 10")->result();
         $countquerycategory=count($query['category']);
         $lastlimit=10-$countquerycategory;
-		$query['listing']=$this->db->query("SELECT '2' AS `catorlist`,`listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`,ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) 
+		$query['listing']=$this->db->query("SELECT '2' AS `catorlist`,`listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`,IFNULL(ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) 
    * cos( radians(`listing`.`long`) - radians($long)) + sin(radians($lat)) 
-   * sin( radians(`listing`. `lat`)))),2)
+   * sin( radians(`listing`. `lat`)))),2),5000)
           AS `dist`, `listing`. `user`, `listing`.`lat`, `listing`.`long`, `listing`.`address`, `listing`.`area`, `listing`.`city`, `listing`.`pincode`, `listing`.`state`, `listing`.`country`, `listing`.`description`, `listing`.`logo`, `listing`.`contactno`, `listing`.`email`, `listing`.`website`, `listing`.`facebook`, `listing`.`twitter`, `listing`.`googleplus`, `listing`.`yearofestablishment`, `listing`.`timeofoperation_start`, `listing`.`timeofoperation_end`, `listing`.`type`, `listing`.`credits`, `listing`.`isverified`, `listing`.`video` ,`city`.`name` AS `cityname`,`category`.`name` AS `categoryname`,`category`.`banner` AS `banner`,`listing`.`deletestatus`,`location`.`name` AS `areaname`,CONCAT(`category`.`name`,`listing`.`name`) AS `fullname` 
 FROM `listingcategory`
 LEFT OUTER JOIN `listing` ON `listing`.`id`=`listingcategory`.`listing`
@@ -401,6 +401,19 @@ WHERE `city`.`id` = '$city' AND `listing`.`deletestatus`='1' AND `listing`.`stat
 HAVING `fullname` LIKE '%$category%'
 ORDER BY `dist` ASC
         LIMIT 0 , $lastlimit")->result();
+//		$query['listing']=$this->db->query("SELECT '2' AS `catorlist`,`listingcategory`.`listing`, `listingcategory`.`category`,`listing`.`name`,`listing`.`id` AS `listingid`,IFNULL(ROUND(( 3959 * acos( cos( radians($lat) ) * cos( radians(`listing`. `lat` ) ) 
+//   * cos( radians(`listing`.`long`) - radians($long)) + sin(radians($lat)) 
+//   * sin( radians(`listing`. `lat`)))),2),0)
+//          AS `dist`, `listing`. `user`, `listing`.`lat`, `listing`.`long`, `listing`.`address`, `listing`.`area`, `listing`.`city`, `listing`.`pincode`, `listing`.`state`, `listing`.`country`, `listing`.`description`, `listing`.`logo`, `listing`.`contactno`, `listing`.`email`, `listing`.`website`, `listing`.`facebook`, `listing`.`twitter`, `listing`.`googleplus`, `listing`.`yearofestablishment`, `listing`.`timeofoperation_start`, `listing`.`timeofoperation_end`, `listing`.`type`, `listing`.`credits`, `listing`.`isverified`, `listing`.`video` ,`city`.`name` AS `cityname`,`category`.`name` AS `categoryname`,`category`.`banner` AS `banner`,`listing`.`deletestatus`,`location`.`name` AS `areaname`,CONCAT(`category`.`name`,`listing`.`name`) AS `fullname` 
+//FROM `listingcategory`
+//LEFT OUTER JOIN `listing` ON `listing`.`id`=`listingcategory`.`listing`
+//LEFT OUTER JOIN `category` ON `category`.`id`=`listingcategory`.`category`
+//LEFT OUTER JOIN `city` ON `city`.`id`=`listing`.`city`
+//LEFT OUTER JOIN `location` ON `location`.`id`=`listing`.`area`
+//WHERE `city`.`id` = '$city' AND `listing`.`deletestatus`='1' AND `listing`.`status`=1 $areawhere
+//HAVING `fullname` LIKE '%$category%' AND `dist` <> null
+//ORDER BY `dist` ASC
+//        LIMIT 0 , $lastlimit")->result();
 		
 		return $query;
 	}
