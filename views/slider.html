@@ -10,11 +10,6 @@
         </div>
         <div class="row">
             <!--<img src="http://localhost/anyinform/lib/images/home/shipping.jpg" class="homeimageright">-->
-
-
-
-
-
             <div class="col-md-3 slider-home">
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="2000">
                     <!-- Indicators -->
@@ -64,9 +59,15 @@
                     <form class="searchform searchformtext">
                         <div class="row" style="margin-bottom:10px;">
                             <div class="col-md-6">
+                                <!--
                                 <select class="city onlycursor" ng-model="form.cityy" ng-change="citychange(form.cityy)">
                                     <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
                                 </select>
+-->
+                                <input type="text" name="city" placeholder="Search City" ng-model="form.cityy" ng-change="searchcity(form.cityy)" autocomplete="off" class="input-home area" />
+                                <div id="divsearcharea" class="searchdrop" ng-show="searchshowcity">
+                                    <p ng-repeat="sea in searchdrop | orderBy : 'name'" ng-click="citychange(sea);">{{sea.name}}</p>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <!--

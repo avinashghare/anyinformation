@@ -23,6 +23,7 @@ phonecatControllers.controller('home',
         $scope.demo = "demo testing";
         $scope.searchshow = false;
         $scope.searchshowarea = false;
+        $scope.searchshowcity = false;
         $scope.searchid = "";
         $scope.form = [];
         $scope.city = '';
@@ -138,6 +139,12 @@ phonecatControllers.controller('home',
         $scope.area = "";
         $scope.prefixnum = "022"
 
+        $scope.getcityid = function (cityname) {
+            RestService.getcityid(cityname).success(function (data, status) {
+                console.error(data);
+            });
+        }
+
         function showPosition2(position) {
             var latlon = position.coords.latitude + "," + position.coords.longitude;
             console.log(position);
@@ -154,10 +161,11 @@ phonecatControllers.controller('home',
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].types[0] == "locality") {
                         cityis.selected = data[i].long_name;
-                        //                        console.log(cityis.selected);
+                        console.log(cityis.selected);
                         if (cityis.selected == "Mumbai") {
                             $scope.prefixnum = "";
                         }
+                        $scope.getcityid(cityis.selected);
                     }
 
                     if (data[i].types[0] == "sublocality_level_1") {
@@ -185,9 +193,9 @@ phonecatControllers.controller('home',
                 $.jStorage.set("cityid", citywegot);
                 city = citywegot;
                 $scope.$apply();
-                console.log(citywegot);
-                $scope.citychange(citywegot);
-                $scope.$apply();
+                //                console.log(citywegot);
+                //                $scope.citychange(citywegot);
+                //                $scope.$apply();
 
             });
 
@@ -216,10 +224,30 @@ phonecatControllers.controller('home',
             $scope.form.area = "";
         };
 
-        $scope.citychange = function (city) {
-            console.log("in change city");
+        var searchcitysuccess = function (data, status) {
+            console.log(data);
+            if (data != "") {
+                $scope.searchdrop = data;
+                $scope.searchshowcity = true;
+            } else {
+                $scope.searchshowcity = false;
+            }
+        };
+        $scope.searchcity = function (text) {
+            console.log(text);
+            if (text != "") {
+                RestService.searchcity(text).success(searchcitysuccess);
+            } else {
+                $scope.searchshowcity = false;
+            }
+        }
+
+        $scope.citychange = function (cityjson) {
             console.log(city);
-            //            RestService.viewonecitylocations(city).success(getlocation);
+            $("input[name=city]").val(city.name);
+            $scope.searchshowcity = false;
+            $.jStorage.set("cityid", cityjson.id);
+            city = cityjson.id;
         };
 
         $scope.areachange = function (area) {
@@ -359,6 +387,7 @@ phonecatControllers.controller('home',
             }
         }
         var getcity = function (data, status) {
+            console.warn(data);
             $scope.cities = data;
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition2, showError);
@@ -367,6 +396,7 @@ phonecatControllers.controller('home',
             }
         };
         RestService.getallcity().success(getcity);
+
         // searching 
 
         //        var searchdata = function (data, status) {

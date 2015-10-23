@@ -286,15 +286,15 @@ class City_model extends CI_Model
 	}
     
     
-    public function searchcity($city)
-	{
-		$query=$this->db->query("SELECT `city`. `id`,`city`. `name` 
-FROM `city` 
-WHERE `city`. `name` LIKE '%$city%'
-        LIMIT 0 , 10")->result();
-		
-		return $query;
-	}
+//    public function searchcity($city)
+//	{
+//		$query=$this->db->query("SELECT `city`. `id`,`city`. `name` 
+//FROM `city` 
+//WHERE `city`. `name` LIKE '%$city%'
+//        LIMIT 0 , 10")->result();
+//		
+//		return $query;
+//	}
     
     
         function getlocationforlatlong()
@@ -308,6 +308,25 @@ WHERE `location`.`lat`=0 AND `location`.`long` =0 LIMIT 0,100")->result();
             else
                 return 0;
         }
+    
+     public function searchcity($city)
+	{
+		$query=$this->db->query("SELECT `city`. `id`,`city`. `name` FROM `city` WHERE `city`. `name` LIKE '%$city%' LIMIT 0 , 10")->result();
+		return $query;
+	}
+    function getcityidbyname($cityname)
+    {
+        $query=$this->db->query("SELECT * FROM `city` WHERE `name` LIKE '$cityname'")->row();
+        if(empty($query))
+        {
+            return 0;
+        }
+        else
+        {
+            $cityid=$query->id;
+            return $cityid;
+        }
+    }
     
     //-----------------Changes made avinash
     
