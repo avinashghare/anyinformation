@@ -59,7 +59,7 @@
     
     <script src="lib/js/ng-tags-input.min.js"></script>
     <script src="lib/js/ngDialog.js"></script>
-    <script src="lib/js/demo2.js"></script>
+<!--    <script src="lib/js/demo2.js"></script>-->
     
 <!--    <script src="lib/js/miniPopup.js"></script>-->
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>

@@ -294,12 +294,12 @@ class Json extends CI_Controller
 		$this->load->view('json',$data);
     }
 
-    public function searchcity()
-    {
-        $city=$this->input->get_post('city');
-        $data['message']=$this->city_model->searchcity($city);
-		$this->load->view('json',$data);
-    }
+//    public function searchcity()
+//    {
+//        $city=$this->input->get_post('city');
+//        $data['message']=$this->city_model->searchcity($city);
+//		$this->load->view('json',$data);
+//    }
 
     public function searcharea()
     {

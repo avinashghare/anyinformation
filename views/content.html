@@ -6,7 +6,7 @@
             <div class="{{applyclass}}">
                 <div class="showmorereal">
                     <div class="row" ng-repeat="categories in homecategory">
-                        <div class="col-xs-6 col-sm-4 col-md-2" ng-repeat="category in categories">
+                        <div class="col-xs-6 col-sm-4 col-md-2" ng-repeat="category in categories track by $index">
                             <div class="product-image-wrapper homecat">
                                 <div class="single-products">
                                     <div class="productinfo text-center">

@@ -140,6 +140,8 @@ phonecatControllers.controller('home',
         $scope.prefixnum = "022"
 
         $scope.getcityid = function (cityname) {
+            $scope.form.cityy = cityname;
+            $.jStorage.set("cityname", cityname);
             RestService.getcityid(cityname).success(function (data, status) {
                 console.error(data);
             });
@@ -189,7 +191,7 @@ phonecatControllers.controller('home',
                         citywegot = $scope.cities[i].id;
                     }
                 }
-                $scope.form.cityy = citywegot;
+                //                $scope.form.cityy = citywegot;
                 $.jStorage.set("cityid", citywegot);
                 city = citywegot;
                 $scope.$apply();
@@ -243,10 +245,11 @@ phonecatControllers.controller('home',
         }
 
         $scope.citychange = function (cityjson) {
-            console.log(city);
-            $("input[name=city]").val(city.name);
+            console.log(cityjson);
+            $("input[name=city]").val(cityjson.name);
             $scope.searchshowcity = false;
             $.jStorage.set("cityid", cityjson.id);
+            $.jStorage.set("cityname", cityjson.name)
             city = cityjson.id;
         };
 
@@ -1300,10 +1303,11 @@ phonecatControllers.controller('OtherCtrl',
         $scope.changepasswordvisible = "false";
         $scope.searchshowarea = false;
         $scope.search = $.jStorage.get("search");;
+        $scope.searchshowcity = false;
 
         $scope.area = "";
         $scope.form = [];
-        $scope.form.cityy = $.jStorage.get("cityid");
+        $scope.form.cityy = $.jStorage.get("cityname");
         $scope.areaname = {};
         $scope.areaname.area = $.jStorage.get("areaname");
 
@@ -1334,10 +1338,13 @@ phonecatControllers.controller('OtherCtrl',
             $scope.form.area = "";
         };
 
-        $scope.citychange = function (city) {
-            console.log("in change city");
-            console.log(city);
-            //            RestService.viewonecitylocations(city).success(getlocation);
+        $scope.citychange = function (cityjson) {
+            console.log(cityjson);
+            $("input[name=city]").val(cityjson.name);
+            $scope.searchshowcity = false;
+            $.jStorage.set("cityname", cityjson.name)
+            $.jStorage.set("cityid", cityjson.id);
+            city = cityjson.id;
         }
 
         $scope.areachange = function (area, areaid) {
@@ -1354,6 +1361,24 @@ phonecatControllers.controller('OtherCtrl',
             lat = area.lat;
             long = area.long;
         };
+
+        var searchcitysuccess = function (data, status) {
+            console.log(data);
+            if (data != "") {
+                $scope.searchdrop = data;
+                $scope.searchshowcity = true;
+            } else {
+                $scope.searchshowcity = false;
+            }
+        };
+        $scope.searchcity = function (text) {
+            console.log(text);
+            if (text != "") {
+                RestService.searchcity(text).success(searchcitysuccess);
+            } else {
+                $scope.searchshowcity = false;
+            }
+        }
 
         var searchareasuccess = function (data, status) {
             console.log(data);
