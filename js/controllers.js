@@ -12,7 +12,7 @@ var phonecatControllers = angular.module('phonecatControllers', ['templateservic
 window.uploadUrl = 'upload.php';
 
 phonecatControllers.controller('home',
-    function ($scope, TemplateService, RestService, $location, $sce, toaster) {
+    function ($scope, TemplateService, RestService, $location, $sce, toaster, $timeout) {
         $scope.template = TemplateService;
         TemplateService.header = "views/header.html";
         TemplateService.navigation = "views/navigation.html";
@@ -90,6 +90,28 @@ phonecatControllers.controller('home',
 
             $scope.myemail = $scope.juser.email;
 
+
+        }
+
+        $scope.showDrop = function (flag) {
+            console.info("in show Drop " + flag);
+            $scope.searchdrop = [{
+                id: 1,
+                name: "Mumbai"
+            }, {
+                id: 2,
+                name: "Delhi"
+            }, {
+                id: 3,
+                name: "Banglore"
+            }, {
+                id: 4,
+                name: "Kolkata"
+            }, {
+                id: 5,
+                name: "Chennai"
+            }];
+            $scope.searchshowcity = flag;
 
         }
 
@@ -1329,6 +1351,27 @@ phonecatControllers.controller('OtherCtrl',
             $location.url('/changepassword');
         }
 
+        $scope.showDrop = function (flag) {
+            console.info("in show Drop " + flag);
+            $scope.searchdrop = [{
+                id: 1,
+                name: "Mumbai"
+            }, {
+                id: 2,
+                name: "Delhi"
+            }, {
+                id: 3,
+                name: "Banglore"
+            }, {
+                id: 4,
+                name: "Kolkata"
+            }, {
+                id: 5,
+                name: "Chennai"
+            }];
+            $scope.searchshowcity = flag;
+
+        }
 
         var getlocation = function (data, status) {
             console.log(data);

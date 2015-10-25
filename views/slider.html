@@ -64,7 +64,7 @@
                                     <option class="onlycursor" style="background:rgba(229, 83, 94, 0.2);" ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</option>
                                 </select>
 -->
-                                <input type="text" name="city" placeholder="Search City" ng-model="form.cityy" ng-change="searchcity(form.cityy)" autocomplete="off" class="input-home area" />
+                                <input type="text" name="city" placeholder="Search City" ng-model="form.cityy" ng-change="searchcity(form.cityy)" autocomplete="off" class="city onlycursor" ng-focus="showDrop(true)"/>
                                 <div id="divsearcharea" class="searchdrop" ng-show="searchshowcity">
                                     <p ng-repeat="sea in searchdrop | orderBy : 'name'" ng-click="citychange(sea);">{{sea.name}}</p>
                                 </div>
@@ -105,7 +105,7 @@
                         </span>
 -->
 
-                        <input type="text" name="abc" placeholder="Search For Anything Anywhere" ng-model="search" ng-keypress="searchlist(search,form.cityy,$event)" style="width: 90%;" autocomplete="off" />
+                        <input type="text" name="abc" placeholder="Search For Anything Anywhere" ng-model="search" ng-keypress="searchlist(search,form.cityy,$event)" style="width: 90%;" autocomplete="off"/>
                         <!-- <input type="hidden" name="searchid" ng-model="categoryid"> -->
                         {{categoryid}}
                         <button type="submit" id="sea" class="btn btn-default search"><i class="fa fa-arrow-circle-o-right" ng-click="innershearch(search)"></i>
